@@ -134,7 +134,7 @@ public class MyselfFragment extends BaseFragment {
 //                web.setDescription("my description");//描述
 //                new ShareAction(activity)
 //                        //分享的平台
-//                        .setPlatform(platform)
+//                        .setPlatform(SHARE_MEDIA.QQ)
 //                        .withMedia(web).setCallback(shareListener).share();
                 break;
         }
