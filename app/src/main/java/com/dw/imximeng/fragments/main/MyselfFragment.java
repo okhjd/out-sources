@@ -122,7 +122,7 @@ public class MyselfFragment extends BaseFragment {
                 break;
             case R.id.tv_my_release://我的发布
                 if (BaseApplication.userInfo.getSessionid() != null) {
-
+                    ActivityUtils.overlay(getActivity(), SignInActivity.class);
                 } else {
                     ActivityUtils.overlay(getActivity(), SignInActivity.class);
                 }
