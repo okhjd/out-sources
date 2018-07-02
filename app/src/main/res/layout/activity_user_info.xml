@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f9f9f9"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_title_bar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/shape_myself_margin"
+        android:paddingLeft="12dp"
+        android:layout_marginTop="10dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_head"
+            android:layout_width="match_parent"
+            android:layout_height="81dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="头像"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+            <ImageView
+                android:id="@+id/iv_head"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/shape_head_bg"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/iv_next"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:id="@+id/iv_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/pic7"
+                android:layout_marginRight="12dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <View style="@style/ViewLineHorizontal" android:background="#ebebeb"/>
+        <RelativeLayout
+            android:id="@+id/rl_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="49dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称"
+                android:gravity="right"
+                android:textSize="15sp"
+                android:textColor="#666666"
+                android:hint="未设置"
+                android:textColorHint="#cccccc"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/pic7"
+                android:paddingRight="12dp"/>
+        </RelativeLayout>
+        <View style="@style/ViewLineHorizontal" android:background="#ebebeb"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_sex"
+            android:layout_width="match_parent"
+            android:layout_height="49dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="性别"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/tv_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="昵称"
+                android:hint="未设置"
+                android:gravity="right"
+                android:textColorHint="#cccccc"
+                android:textSize="15sp"
+                android:textColor="#666666"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/pic7"
+                android:paddingRight="12dp"/>
+        </RelativeLayout>
+        <View style="@style/ViewLineHorizontal" android:background="#ebebeb"/>
+        <RelativeLayout
+            android:id="@+id/rl_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="49dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="生日"
+                android:textSize="15sp"
+                android:textColor="#333333"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/tv_birthday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:gravity="right"
+                android:hint="未设置"
+                android:textColorHint="#cccccc"
+                android:textSize="15sp"
+                android:textColor="#666666"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:drawablePadding="10dp"
+                android:drawableRight="@mipmap/pic7"
+                android:paddingRight="12dp"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_autograph"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="@drawable/shape_myself_margin"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="签名"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/tv_autograph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="right"
+            android:hint="未设置"
+            android:textColorHint="#cccccc"
+            android:textSize="15sp"
+            android:textColor="#666666"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/pic7"/>
+    </RelativeLayout>
+</LinearLayout>

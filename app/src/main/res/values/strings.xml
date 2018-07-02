@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">锡盟圈</string>
+    <string name="title_home">首页</string>
+    <string name="title_region">地区</string>
+    <string name="title_advertisement">广告</string>
+    <string name="title_myself">我</string>
+
+    <string name="set">设置</string>
+    <string name="cancel">取消</string>
+</resources>

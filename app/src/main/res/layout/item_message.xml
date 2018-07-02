@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/shape_notice_item">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:id="@+id/red_point"
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            android:background="@drawable/shape_message_red_point"
+            android:layout_margin="6dp"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/tv_date_time"
+            android:text="消息标题"
+            android:singleLine="true"
+            android:paddingTop="17dp"
+            android:paddingRight="17dp"
+            android:paddingLeft="17dp"
+            android:paddingBottom="12dp"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:includeFontPadding="false"/>
+
+        <TextView
+            android:id="@+id/tv_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="10sp"
+            android:text="时间"
+            android:paddingTop="17dp"
+            android:paddingRight="17dp"
+            android:paddingBottom="12dp"
+            android:layout_centerVertical="true"
+            android:textColor="#999999"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:text="查看详情查看详情查看详情查看详情查看详情"
+        android:textSize="10sp"
+        android:textColor="#999999"
+        android:singleLine="true"
+        android:paddingRight="17dp"
+        android:paddingLeft="17dp"
+        android:gravity="center_vertical"/>
+
+    <View style="@style/ViewLineHorizontal"
+        android:background="#e5e5e5"
+        android:paddingRight="17dp"
+        android:paddingLeft="17dp"/>
+
+    <TextView
+        android:id="@+id/tv_details"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:text="查看详情"
+        android:textSize="8sp"
+        android:textColor="#999999"
+        android:paddingRight="17dp"
+        android:paddingLeft="17dp"
+        android:gravity="center_vertical"
+        android:drawableRight="@mipmap/pic7"/>
+
+
+</LinearLayout>

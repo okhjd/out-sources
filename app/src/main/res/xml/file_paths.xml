@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--适配android 7.0 关于权限的设置-->
+<resources>
+    <paths>
+        <external-path
+            name="camera_photos"
+            path="."/>
+        <external-path
+            name="files_root"
+            path="Android/data/com.dw.imximeng/"/>
+        <external-path
+            name="external_storage_root"
+            path="."/>
+    </paths>
+</resources>

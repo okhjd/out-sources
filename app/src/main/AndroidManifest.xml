@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.dw.imximeng">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name=".base.BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" />
+        <activity android:name=".activitys.LoadActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activitys.GuideActivity" />
+        <activity android:name=".activitys.signIn.FastRegistrationActivity" />
+        <activity android:name=".activitys.signIn.ConfirmPasswordActivity" />
+        <activity android:name=".activitys.signIn.SignInActivity" />
+        <activity android:name=".activitys.signIn.ForgetPasswordActivity" />
+        <activity android:name=".activitys.WebActivity" />
+
+
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent100424468" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".activitys.notices.NoticeListActivity" />
+        <activity android:name=".activitys.myself.SetActivity" />
+        <activity android:name=".activitys.myself.AboutActivity" />
+        <activity android:name=".activitys.advertisements.SmallToolsActivity" />
+        <activity android:name=".activitys.home.SearchActivity" />
+        <activity android:name=".activitys.home.MyCollectionActivity" />
+        <activity android:name=".activitys.myself.MessageActivity" />
+        <activity android:name=".activitys.myself.UserInfoActivity" />
+        <activity android:name=".activitys.myself.EditActivity" />
+        <activity android:name=".activitys.myself.MyPointsActivity" />
+        <activity android:name=".activitys.myself.PrivacySetActivity" />
+        <activity android:name=".activitys.myself.FeedbackActivity" />
+        <activity android:name=".activitys.myself.OnlineServiceActivity" />
+
+
+        <meta-data
+            android:name="design_width"
+            android:value="768" />
+        <meta-data
+            android:name="design_height"
+            android:value="1280" />
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5b308e27a40fa33af0000025" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Umeng" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.dw.imximeng.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dw.imximeng.MainActivity">
+
+    <com.dw.imximeng.widgets.ViewPagerSlide
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/radio"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View style="@style/ViewLineHorizontal"
+        android:layout_above="@+id/radio"/>
+
+    <RadioGroup
+        android:id="@+id/radio"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            style="@style/mainMenu"
+            android:button="@null"
+            android:drawableTop="@drawable/radio_button_home"
+            android:checked="true"
+            android:text="首页"
+            android:textSize="10sp"
+            android:textColor="@drawable/select_down_typeface"/>
+        <RadioButton
+            android:id="@+id/rb_region"
+            style="@style/mainMenu"
+            android:drawableTop="@drawable/radio_button_region"
+            android:button="@null"
+            android:text="地区"
+            android:textSize="10sp"
+            android:textColor="@drawable/select_down_typeface"/>
+        <RadioButton
+            android:id="@+id/rb_advertisement"
+            style="@style/mainMenu"
+            android:drawableTop="@drawable/radio_button_advertisement"
+            android:button="@null"
+            android:text="广告"
+            android:textSize="10sp"
+            android:textColor="@drawable/select_down_typeface"/>
+        <RadioButton
+            android:id="@+id/rb_myself"
+            style="@style/mainMenu"
+            android:drawableTop="@drawable/radio_button_myself"
+            android:button="@null"
+            android:text="我"
+            android:textSize="10sp"
+            android:textColor="@drawable/select_down_typeface"/>
+
+    </RadioGroup>
+
+</RelativeLayout>

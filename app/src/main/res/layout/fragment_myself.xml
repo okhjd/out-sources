@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingBottom="14dp"
+        android:paddingTop="14dp"
+        android:text="标题"
+        android:textColor="#333333"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <View
+        style="@style/ViewLineHorizontal"
+        android:background="#e0e0e0" />
+
+    <RelativeLayout
+        android:id="@+id/rl_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_myself_margin"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/iv_head"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@mipmap/pic32"
+            android:background="@drawable/dialog_2dp_corner_white_bg"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/iv_next"
+            android:layout_toRightOf="@+id/iv_head"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="点击登录"
+                android:textColor="#333333"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_user_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="您还没有登录，点我前往登录"
+                android:textColor="#999999"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/pic7" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/shape_myself_margin"
+        android:drawableLeft="@mipmap/pic63"
+        android:drawablePadding="6dp"
+        android:drawableRight="@mipmap/pic7"
+        android:gravity="center_vertical"
+        android:paddingLeft="13dp"
+        android:paddingRight="12dp"
+        android:text="消息"
+        android:textSize="14sp"
+        android:textColor="#333333"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_myself_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_wallet"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:drawableLeft="@mipmap/pic64"
+            android:drawablePadding="6dp"
+            android:drawableRight="@mipmap/pic7"
+            android:gravity="center_vertical"
+            android:paddingLeft="13dp"
+            android:paddingRight="12dp"
+            android:text="钱包"
+            android:textSize="14sp"
+            android:textColor="#333333"/>
+
+        <View
+            style="@style/ViewLineHorizontal"
+            android:layout_marginLeft="13dp"
+            android:background="#ebebeb" />
+
+        <TextView
+            android:id="@+id/tv_integral"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:drawableLeft="@mipmap/pic65"
+            android:drawablePadding="6dp"
+            android:drawableRight="@mipmap/pic7"
+            android:gravity="center_vertical"
+            android:paddingLeft="13dp"
+            android:paddingRight="12dp"
+            android:text="积分"
+            android:textSize="14sp"
+            android:textColor="#333333"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_my_release"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_myself_margin"
+        android:drawableLeft="@mipmap/pic66"
+        android:drawablePadding="6dp"
+        android:drawableRight="@mipmap/pic7"
+        android:gravity="center_vertical"
+        android:paddingLeft="13dp"
+        android:paddingRight="12dp"
+        android:text="我的发布"
+        android:textSize="14sp"
+        android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/tv_set"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_myself_margin"
+        android:drawableLeft="@mipmap/pic67"
+        android:drawablePadding="6dp"
+        android:drawableRight="@mipmap/pic7"
+        android:gravity="center_vertical"
+        android:paddingLeft="13dp"
+        android:paddingRight="12dp"
+        android:text="设置"
+        android:textSize="14sp"
+        android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/tv_share"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_myself_margin"
+        android:baselineAligned="false"
+        android:drawableLeft="@mipmap/pic68"
+        android:drawablePadding="6dp"
+        android:drawableRight="@mipmap/pic7"
+        android:gravity="center_vertical"
+        android:paddingLeft="13dp"
+        android:paddingRight="12dp"
+        android:text="分享"
+        android:textSize="14sp"
+        android:textColor="#333333"/>
+</LinearLayout>

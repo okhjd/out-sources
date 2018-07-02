@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_picker"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/ll_received_order"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txv_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|left"
+            android:text="取消"
+            android:textStyle="bold"
+            android:textColor="#699df5"
+            android:textSize="18sp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"/>
+        <TextView
+            android:id="@+id/txv_sure"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|right"
+            android:text="确定"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:textColor="#699df5"
+            android:textSize="18sp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"/>
+    </LinearLayout>
+    <com.dw.imximeng.widgets.DateTimeDialog.PickTimeView
+        android:id="@+id/datePickerStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

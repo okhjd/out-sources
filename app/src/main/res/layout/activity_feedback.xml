@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f9f9f9">
+
+    <include layout="@layout/common_title_bar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="149dp"
+        android:layout_marginTop="10dp"
+        android:padding="12dp"
+        android:background="@drawable/shape_myself_margin">
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/tv_num"
+            android:gravity="top"
+            android:maxLength="300"
+            android:background="@color/white"
+            android:hint="留下您宝贵的意见和建议，我们将努力改进..."
+            android:textSize="13sp"
+            android:textColorHint="#cccccc"
+            android:textColor="#333333"/>
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/300"
+            android:textSize="13sp"
+            android:textColor="#cccccc"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_post"
+        style="@style/TextViewButtonTheme"
+        android:layout_marginRight="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="30dp"
+        android:text="提交意见反馈"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:enabled="false" />
+</LinearLayout>
