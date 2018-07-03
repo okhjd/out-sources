@@ -52,4 +52,14 @@ public interface MethodHelper {
     String PRIVACY_SET = BuildConfig.API_ENV + "/member/app/user/privacyset";
     //意见反馈
     String FEEDBACK = BuildConfig.API_ENV + "/member/app/user/feedback";
+    //我的钱包
+    String USER_WALLET = BuildConfig.API_ENV + "/member/app/user/balanceInfo";
+    //余额明细
+    String WALLET_RECORD = BuildConfig.API_ENV + "/member/app/user/balanceList";
+    //我的银行卡
+    String BANK_CARD_LIST = BuildConfig.API_ENV + "/member/app/user/bankList";
+    //支付密码设置
+    String SET_PAY_PASSWORD = BuildConfig.API_ENV + "/member/app/user/paypwdset";
+    //登录密码设置
+    String MODIFY_PASSWORD = BuildConfig.API_ENV + "/member/app/user/passwordset";
 }

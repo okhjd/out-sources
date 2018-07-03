@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f9f9f9"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_title_bar"/>
+
+    <ListView
+        android:id="@+id/lv_bank_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:dividerHeight="15dp"
+        android:layout_marginTop="18dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"/>
+
+    <TextView
+        android:id="@+id/tv_add_bank_card"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:text="添加银行卡"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:paddingLeft="17dp"
+        android:paddingRight="12dp"
+        android:background="@drawable/shape_myself_margin"
+        android:drawablePadding="14dp"
+        android:drawableRight="@mipmap/pic7"
+        android:drawableLeft="@mipmap/pic22"/>
+</LinearLayout>

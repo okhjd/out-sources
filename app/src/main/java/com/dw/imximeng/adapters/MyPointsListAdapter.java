@@ -25,6 +25,6 @@ public class MyPointsListAdapter extends CommonAdapter<MyPoints.PointsItem> {
         helper.setText(R.id.tv_point_cate, item.getCateName());
         helper.setText(R.id.tv_point_type, item.getTypeName());
         helper.setText(R.id.tv_date_time, item.getShowTime());
-        helper.setText(R.id.tv_point_num, item.getNumber());
+        helper.setText(R.id.tv_point_num, item.getType() == 1 ? "+" + item.getNumber() : "-" + item.getNumber());
     }
 }

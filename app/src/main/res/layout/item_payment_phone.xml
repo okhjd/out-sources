@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginRight="38dp"
+        android:layout_marginLeft="38dp"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_margin">
+        <EditText
+            android:id="@+id/et_account_number"
+            style="@style/EditTextTheme"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="18dp"
+            android:layout_weight="2"
+            android:inputType="phone"
+            android:maxLength="12"
+            android:hint="请输入手机号"
+            android:drawableLeft="@mipmap/pic97"/>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/text_color_hint"/>
+
+        <TextView
+            android:id="@+id/tv_verification_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="获取验证码"
+            android:textSize="13sp"
+            android:layout_weight="1"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
+            android:textColor="@color/text_color_blue"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_verification_code"
+        style="@style/EditTextTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="38dp"
+        android:layout_marginLeft="38dp"
+        android:layout_marginTop="10dp"
+        android:hint="手机验证码"
+        android:textColor="#bdbdbd"
+        android:maxLength="6"
+        android:drawableLeft="@mipmap/pic98"
+        android:drawablePadding="11dp"
+        android:background="@drawable/shape_margin"/>
+
+    <TextView
+        android:id="@+id/tv_next"
+        style="@style/TextViewButtonTheme"
+        android:background="@drawable/shape_sign_in_btn_enable"
+        android:layout_marginRight="38dp"
+        android:layout_marginLeft="38dp"
+        android:layout_marginTop="30dp"
+        android:text="下一步"
+        android:textStyle="bold"
+        android:enabled="true"/>
+</LinearLayout>

@@ -53,7 +53,8 @@ public class SetActivity extends BaseActivity {
     }
 
     @OnClick({R.id.tv_user_exit, R.id.tv_about, R.id.tv_privacy, R.id.rl_clear_cahce, R.id.tv_help_center,
-            R.id.tv_service_statement, R.id.tv_feedback, R.id.tv_online_service,R.id.rl_payment_password})
+            R.id.tv_service_statement, R.id.tv_feedback, R.id.tv_online_service, R.id.rl_payment_password,
+            R.id.rl_modify_password})
     public void onClick(View view) {
         Bundle bundle = new Bundle();
         switch (view.getId()) {
@@ -95,6 +96,9 @@ public class SetActivity extends BaseActivity {
                 break;
             case R.id.rl_payment_password:
                 ActivityUtils.overlay(this, PaymentPasswordActivity.class);
+                break;
+            case R.id.rl_modify_password:
+                ActivityUtils.overlay(this, ModifyPasswordActivity.class);
                 break;
         }
     }

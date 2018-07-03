@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.myself.MessageActivity;
 import com.dw.imximeng.activitys.myself.MyPointsActivity;
+import com.dw.imximeng.activitys.myself.MyWalletActivity;
 import com.dw.imximeng.activitys.myself.SetActivity;
 import com.dw.imximeng.activitys.myself.UserInfoActivity;
 import com.dw.imximeng.activitys.signIn.SignInActivity;
@@ -17,8 +18,10 @@ import com.dw.imximeng.helper.ImageLoaderUtils;
 import com.dw.imximeng.helper.MaDensityUtils;
 import com.dw.imximeng.widgets.ImageViewRoundOval;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMWeb;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -63,7 +66,7 @@ public class MyselfFragment extends BaseFragment {
     public void initView(View view) {
         tvTitle.setText("我");
         ivHead.setType(ImageViewRoundOval.TYPE_ROUND);
-        ivHead.setRoundRadius(MaDensityUtils.dp2px(getActivity(),5));//圆角大小
+        ivHead.setRoundRadius(MaDensityUtils.dp2px(getActivity(), 5));//圆角大小
 
     }
 
@@ -74,18 +77,18 @@ public class MyselfFragment extends BaseFragment {
         }
         if (BaseApplication.userInfo.getSessionid() != null) {
             ImageLoader.getInstance().displayImage(BaseApplication.userInfo.getShowHportrait(), ivHead,
-                    ImageLoaderUtils.getDisplayImageOptionsRound(R.mipmap.pic32, MaDensityUtils.dp2px(getActivity(),5)));
+                    ImageLoaderUtils.getDisplayImageOptionsRound(R.mipmap.pic32, MaDensityUtils.dp2px(getActivity(), 5)));
             tvUserName.setText(BaseApplication.userInfo.getNickname());
             tvUserTips.setText("欢迎回来");
-        }else {
+        } else {
             ivHead.setImageResource(R.mipmap.pic32);
             tvUserName.setText("点击登录");
             tvUserTips.setText("您还没有登录，点我前往登录");
         }
     }
 
-    @OnClick({R.id.rl_user_info, R.id.tv_message,R.id.tv_wallet, R.id.tv_integral,
-            R.id.tv_my_release,R.id.tv_share,R.id.tv_set})
+    @OnClick({R.id.rl_user_info, R.id.tv_message, R.id.tv_wallet, R.id.tv_integral,
+            R.id.tv_my_release, R.id.tv_share, R.id.tv_set})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_set:
@@ -98,7 +101,7 @@ public class MyselfFragment extends BaseFragment {
             case R.id.rl_user_info:
                 if (BaseApplication.userInfo.getSessionid() == null) {
                     ActivityUtils.overlay(getActivity(), SignInActivity.class);
-                }else {
+                } else {
                     ActivityUtils.overlay(getActivity(), UserInfoActivity.class);
                 }
                 break;
@@ -111,7 +114,7 @@ public class MyselfFragment extends BaseFragment {
                 break;
             case R.id.tv_wallet://钱包
                 if (BaseApplication.userInfo.getSessionid() != null) {
-
+                    ActivityUtils.overlay(getActivity(), MyWalletActivity.class);
                 } else {
                     ActivityUtils.overlay(getActivity(), SignInActivity.class);
                 }
@@ -131,6 +134,11 @@ public class MyselfFragment extends BaseFragment {
                 }
                 break;
             case R.id.tv_share://分享
+                new ShareAction(getActivity())
+                        .withText("hello")
+                        .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(shareListener).open();
+
 //                UMWeb  web = new UMWeb(BaseApplication.userSiteInfo.getData().get);
 //                web.setTitle("This is music title");//标题
 //                web.setThumb(thumb);  //缩略图
@@ -151,6 +159,7 @@ public class MyselfFragment extends BaseFragment {
         @Override
         public void onStart(SHARE_MEDIA platform) {
         }
+
         /**
          * @descrption 分享成功的回调
          * @param platform 平台类型
@@ -159,6 +168,7 @@ public class MyselfFragment extends BaseFragment {
         public void onResult(SHARE_MEDIA platform) {
             showToast("成功了");
         }
+
         /**
          * @descrption 分享失败的回调
          * @param platform 平台类型
@@ -166,8 +176,9 @@ public class MyselfFragment extends BaseFragment {
          */
         @Override
         public void onError(SHARE_MEDIA platform, Throwable t) {
-            showToast("失败"+t.getMessage());
+            showToast("失败" + t.getMessage());
         }
+
         /**
          * @descrption 分享取消的回调
          * @param platform 平台类型
@@ -179,7 +190,7 @@ public class MyselfFragment extends BaseFragment {
     };
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void onEventBackgroundThread(final MessageEvent event){
+    public void onEventBackgroundThread(final MessageEvent event) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {

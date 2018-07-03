@@ -76,13 +76,14 @@ public class ItemPasswordLayout extends EditText {
 
         // 初始化密码画笔
         mPwdPaint = new Paint();
-        mPwdPaint.setColor(Color.BLACK);
+        mPwdPaint.setColor(Color.parseColor("#333333"));
         mPwdPaint.setStyle(Paint.Style.FILL);
+        mPwdPaint.setTextSize(MaDensityUtils.sp2px(getContext(), 16));
         mPwdPaint.setAntiAlias(true);
         // 初始化密码框
         mRectPaint = new Paint();
         mRectPaint.setStyle(Paint.Style.FILL);
-        mRectPaint.setColor(Color.LTGRAY);
+        mRectPaint.setColor(Color.parseColor("#999999"));
         mRectPaint.setAntiAlias(true);
     }
 
@@ -96,12 +97,17 @@ public class ItemPasswordLayout extends EditText {
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
 //        canvas.drawRect(0, 2, mWidth, mHeight-2, paint);
-        canvas.drawRoundRect(new RectF(0, 0, mWidth, mHeight), 25, 25, paint);
+        canvas.drawRoundRect(new RectF(0, 0, mWidth, mHeight), MaDensityUtils.dp2pix(getContext(),4),
+                MaDensityUtils.dp2pix(getContext(),4), paint);
 
         mRectPaint.setStrokeWidth(MaDensityUtils.dp2pix(getContext(),1));
         mRectPaint.setStyle(Paint.Style.STROKE);
-        RectF rectF = new RectF(MaDensityUtils.dp2pix(getContext(),1), MaDensityUtils.dp2pix(getContext(),1), mWidth-MaDensityUtils.dp2pix(getContext(),1), mHeight-MaDensityUtils.dp2pix(getContext(),1));
-        canvas.drawRoundRect(rectF, 25, 25, mRectPaint);
+        RectF rectF = new RectF(MaDensityUtils.dp2pix(getContext(),1),
+                MaDensityUtils.dp2pix(getContext(),1),
+                mWidth-MaDensityUtils.dp2pix(getContext(),1),
+                mHeight-MaDensityUtils.dp2pix(getContext(),1));
+        canvas.drawRoundRect(rectF, MaDensityUtils.dp2pix(getContext(),4),
+                MaDensityUtils.dp2pix(getContext(),4), mRectPaint);
         // 计算每个密码框宽度
         int rectWidth = (mWidth - PWD_SPACING * (PWD_LENGTH - 1)) / PWD_LENGTH;
         // 绘制密码框
@@ -126,7 +132,9 @@ public class ItemPasswordLayout extends EditText {
         for (int i = 0; i < mInputLength; i++) {
             int cx = rectWidth / 2 + (rectWidth + PWD_SPACING) * i;
             int cy = mHeight / 2;
-            canvas.drawCircle(cx, cy, PWD_SIZE, mPwdPaint);
+            int size = MaDensityUtils.dp2px(getContext(), 10);
+            canvas.drawCircle(cx, cy, size, mPwdPaint);
+//            canvas.drawCircle(cx, cy, PWD_SIZE, mPwdPaint);
         }
 
     }

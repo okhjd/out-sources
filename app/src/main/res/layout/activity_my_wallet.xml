@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f9f9f9">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#696f77">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/pic77"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:onClick="back"/>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="我的钱包" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="45dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="充值"
+                android:textColor="@color/white"
+                android:drawableTop="@mipmap/pic70"
+                android:drawablePadding="13dp"
+                android:textSize="14sp"
+                android:layout_gravity="center_horizontal"
+                android:includeFontPadding="false"
+                android:layout_marginBottom="40dp"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="钱包"
+                    android:textColor="@color/white"
+                    android:drawableTop="@mipmap/pic71"
+                    android:drawablePadding="13dp"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_horizontal"
+                    android:includeFontPadding="false"
+                    android:layout_marginBottom="9dp"/>
+
+                <TextView
+                    android:id="@+id/tv_total_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="￥652.00"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:layout_gravity="center_horizontal"
+                    android:includeFontPadding="false"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_bank_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="银行卡"
+                android:textColor="@color/white"
+                android:drawableTop="@mipmap/pic72"
+                android:drawablePadding="13dp"
+                android:textSize="14sp"
+                android:layout_gravity="center_horizontal"
+                android:includeFontPadding="false"
+                android:layout_marginBottom="40dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_record"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:layout_marginTop="10dp"
+        android:text="今日明细"
+        android:textSize="14sp"
+        android:textColor="#333333"
+        android:gravity="center_vertical"
+        android:background="@drawable/shape_margin"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@mipmap/pic73"
+        android:drawableRight="@mipmap/pic7"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.dw.imximeng.widgets.AutoListView
+            android:id="@+id/lv_details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="0.5dp"
+            android:divider="#ebebeb"
+            android:background="@drawable/shape_myself_margin"
+            android:layout_above="@+id/ll_put_forward"/>
+        <LinearLayout
+            android:id="@+id/ll_put_forward"
+            android:layout_width="match_parent"
+            android:layout_height="71dp"
+            android:orientation="vertical"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_alignParentBottom="true">
+            <TextView
+                android:id="@+id/tv_sign_in"
+                style="@style/TextViewButtonTheme"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:background="@drawable/shape_sign_in_btn_enable"
+                android:text="提现申请" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
