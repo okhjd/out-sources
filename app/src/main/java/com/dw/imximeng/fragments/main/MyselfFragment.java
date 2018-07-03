@@ -1,7 +1,6 @@
 package com.dw.imximeng.fragments.main;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dw.imximeng.R;
@@ -16,6 +15,7 @@ import com.dw.imximeng.bean.MessageEvent;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.ImageLoaderUtils;
 import com.dw.imximeng.helper.MaDensityUtils;
+import com.dw.imximeng.widgets.ImageViewRoundOval;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -38,7 +38,7 @@ public class MyselfFragment extends BaseFragment {
     @BindView(R.id.tv_set)
     TextView tvSet;
     @BindView(R.id.iv_head)
-    ImageView ivHead;
+    ImageViewRoundOval ivHead;
     @BindView(R.id.tv_user_name)
     TextView tvUserName;
     @BindView(R.id.tv_user_tips)
@@ -62,6 +62,9 @@ public class MyselfFragment extends BaseFragment {
     @Override
     public void initView(View view) {
         tvTitle.setText("我");
+        ivHead.setType(ImageViewRoundOval.TYPE_ROUND);
+        ivHead.setRoundRadius(MaDensityUtils.dp2px(getActivity(),5));//圆角大小
+
     }
 
     @Override

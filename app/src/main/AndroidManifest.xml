@@ -75,6 +75,7 @@
         <activity android:name=".activitys.myself.PrivacySetActivity" />
         <activity android:name=".activitys.myself.FeedbackActivity" />
         <activity android:name=".activitys.myself.OnlineServiceActivity" />
+        <activity android:name=".activitys.myself.PaymentPasswordActivity" />
 
 
         <meta-data

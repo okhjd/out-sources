@@ -52,6 +52,7 @@ public class UserSiteInfo {
          * aboutus_url : http://test.dingwei.cn/xmcircle/member/app/User/webInfo?field=cn_aboutus
          * agreement_url : http://test.dingwei.cn/xmcircle/member/app/User/webInfo?field=cn_agreement
          * helpcenter_url : http://test.dingwei.cn/xmcircle/member/app/User/webInfo?field=cn_helpcenter
+         * statement_url : "http://test.dingwei.cn/xmcircle/member/app/User/webInfo?field=cn_statement"
          */
 
         private String id;
@@ -63,6 +64,7 @@ public class UserSiteInfo {
         private String aboutus_url;
         private String agreement_url;
         private String helpcenter_url;
+        private String statement_url;
 
         public String getId() {
             return id;
@@ -134,6 +136,14 @@ public class UserSiteInfo {
 
         public void setHelpcenter_url(String helpcenter_url) {
             this.helpcenter_url = helpcenter_url;
+        }
+
+        public String getStatement_url() {
+            return statement_url;
+        }
+
+        public void setStatement_url(String statement_url) {
+            this.statement_url = statement_url;
         }
     }
 }

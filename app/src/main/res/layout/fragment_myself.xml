@@ -30,7 +30,7 @@
         android:background="@drawable/shape_myself_margin"
         android:padding="12dp">
 
-        <ImageView
+        <com.dw.imximeng.widgets.ImageViewRoundOval
             android:id="@+id/iv_head"
             android:layout_width="64dp"
             android:layout_height="64dp"

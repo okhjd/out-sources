@@ -27,12 +27,14 @@ import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.helper.ActivityForResultCode;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.CodeHelper;
+import com.dw.imximeng.helper.MaDensityUtils;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.PhotoUtils;
 import com.dw.imximeng.helper.StringUtils;
 import com.dw.imximeng.widgets.AlertViewDialog.AlertView;
 import com.dw.imximeng.widgets.AlertViewDialog.OnItemClickListener;
 import com.dw.imximeng.widgets.DateTimeDialog.PickerTimeActivityDialog;
+import com.dw.imximeng.widgets.ImageViewRoundOval;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -54,7 +56,7 @@ import okhttp3.Response;
  */
 public class UserInfoActivity extends BaseActivity {
     @BindView(R.id.iv_head)
-    ImageView ivHead;
+    ImageViewRoundOval ivHead;
     @BindView(R.id.tv_nickname)
     TextView tvNickname;
     @BindView(R.id.tv_sex)
@@ -84,6 +86,8 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     public void initView() {
         setTitle("个人资料");
+        ivHead.setType(ImageViewRoundOval.TYPE_ROUND);
+        ivHead.setRoundRadius(MaDensityUtils.dp2px(this,5));//圆角大小
     }
 
     @Override
@@ -127,11 +131,11 @@ public class UserInfoActivity extends BaseActivity {
                         switch (position) {
                             case 0:
                                 saveData(postMap(BaseApplication.userInfo.getSessionid(), 1, null,
-                                        null, sharedPreferencesHelper.isSwitchLanguage()), null);
+                                        null, sharedPreferencesHelper.isSwitchLanguage()));
                                 break;
                             case 1:
                                 saveData(postMap(BaseApplication.userInfo.getSessionid(), 2, null,
-                                        null, sharedPreferencesHelper.isSwitchLanguage()), null);
+                                        null, sharedPreferencesHelper.isSwitchLanguage()));
                                 break;
                         }
                     }
@@ -182,7 +186,7 @@ public class UserInfoActivity extends BaseActivity {
                     if (bitmap != null) {
                         showImages(bitmap);
                         File file = PhotoUtils.getFileByUri(this, cropImageUri);
-                        saveData(postMap(BaseApplication.userInfo.getSessionid(), BaseApplication.userInfo.getSex(), null,
+                        saveHeadFile(postMap(BaseApplication.userInfo.getSessionid(), BaseApplication.userInfo.getSex(), null,
                                 bitmap.toString(), sharedPreferencesHelper.isSwitchLanguage()), file);
                     }
                     break;
@@ -297,11 +301,46 @@ public class UserInfoActivity extends BaseActivity {
         return map;
     }
 
-    private void saveData(final LinkedHashMap<String, String> map, File file) {
+    private void saveData(final LinkedHashMap<String, String> map) {
         showProgressBar();
         OkHttpUtils.post().url(MethodHelper.SAVE_DATA)
                 .params(map)
-                .addFile("hportrait", file.getName(), file)
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                closeProgressBar();
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                closeProgressBar();
+                showToast(response.getMessage());
+                if (response.getStatus() == 1) {
+                    if (map.get("birthday") != null) {
+                        BaseApplication.userInfo.setBirthday(map.get("birthday"));
+                    }
+                    if (map.get("sex") != null) {
+                        BaseApplication.userInfo.setSex(map.get("sex"));
+                        BaseApplication.userInfo.setShowSex(map.get("sex").equals("1") ? "男" : "女");
+                    }
+                    setViewData();
+                }
+            }
+        });
+    }
+
+    private void saveHeadFile(final LinkedHashMap<String, String> map, File file) {
+        showProgressBar();
+        OkHttpUtils.post().url(MethodHelper.SAVE_DATA)
+                .params(map)
+                .addFile("hportrait", "photo.jpg", file)
                 .build().execute(new Callback<Result>() {
             @Override
             public Result parseNetworkResponse(Response response, int id) throws Exception {
@@ -354,7 +393,7 @@ public class UserInfoActivity extends BaseActivity {
             @Override
             public void Onclick(String choiceTime) {
                 saveData(postMap(BaseApplication.userInfo.getSessionid(), BaseApplication.userInfo.getSex(), choiceTime,
-                        null, sharedPreferencesHelper.isSwitchLanguage()), null);
+                        null, sharedPreferencesHelper.isSwitchLanguage()));
             }
         });
         WindowManager.LayoutParams wmParams = dialog.getWindow().getAttributes();

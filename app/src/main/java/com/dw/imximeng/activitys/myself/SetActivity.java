@@ -53,8 +53,9 @@ public class SetActivity extends BaseActivity {
     }
 
     @OnClick({R.id.tv_user_exit, R.id.tv_about, R.id.tv_privacy, R.id.rl_clear_cahce, R.id.tv_help_center,
-            R.id.tv_service_statement, R.id.tv_feedback, R.id.tv_online_service})
+            R.id.tv_service_statement, R.id.tv_feedback, R.id.tv_online_service,R.id.rl_payment_password})
     public void onClick(View view) {
+        Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.tv_user_exit:
                 showDialog();
@@ -75,18 +76,25 @@ public class SetActivity extends BaseActivity {
                 }
                 break;
             case R.id.tv_help_center:
-                Bundle bundle = new Bundle();
+                bundle.clear();
                 bundle.putString(ActivityExtras.EXTRAS_USER_PROTOCOL_URL, BaseApplication.userSiteInfo.getData().getHelpcenter_url());
                 bundle.putString(ActivityExtras.EXTRAS_WEB_TITLE, "帮助中心");
                 ActivityUtils.overlay(this, WebActivity.class, bundle);
                 break;
             case R.id.tv_service_statement://广告服务声明
+                bundle.clear();
+                bundle.putString(ActivityExtras.EXTRAS_USER_PROTOCOL_URL, BaseApplication.userSiteInfo.getData().getStatement_url());
+                bundle.putString(ActivityExtras.EXTRAS_WEB_TITLE, "广告服务声明");
+                ActivityUtils.overlay(this, WebActivity.class, bundle);
                 break;
             case R.id.tv_feedback:
                 ActivityUtils.overlay(this, FeedbackActivity.class);
                 break;
             case R.id.tv_online_service:
                 ActivityUtils.overlay(this, OnlineServiceActivity.class);
+                break;
+            case R.id.rl_payment_password:
+                ActivityUtils.overlay(this, PaymentPasswordActivity.class);
                 break;
         }
     }
