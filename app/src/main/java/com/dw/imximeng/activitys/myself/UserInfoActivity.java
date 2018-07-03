@@ -89,11 +89,7 @@ public class UserInfoActivity extends BaseActivity {
     @Override
     public void initData() {
         if (BaseApplication.userInfo.getSessionid() != null) {
-            ImageLoader.getInstance().displayImage(BaseApplication.userInfo.getShowHportrait(), ivHead);
-            tvNickname.setText(BaseApplication.userInfo.getNickname());
-            tvSex.setText(BaseApplication.userInfo.getShowSex().equals("未设置") ? "" : BaseApplication.userInfo.getShowSex());
-            tvBirthday.setText(BaseApplication.userInfo.getBirthday());
-            tvAutograph.setText(BaseApplication.userInfo.getSignature());
+            setViewData();
         }
     }
 
@@ -131,11 +127,11 @@ public class UserInfoActivity extends BaseActivity {
                         switch (position) {
                             case 0:
                                 saveData(postMap(BaseApplication.userInfo.getSessionid(), 1, null,
-                                        null, sharedPreferencesHelper.isSwitchLanguage()));
+                                        null, sharedPreferencesHelper.isSwitchLanguage()), null);
                                 break;
                             case 1:
                                 saveData(postMap(BaseApplication.userInfo.getSessionid(), 2, null,
-                                        null, sharedPreferencesHelper.isSwitchLanguage()));
+                                        null, sharedPreferencesHelper.isSwitchLanguage()), null);
                                 break;
                         }
                     }
@@ -185,8 +181,9 @@ public class UserInfoActivity extends BaseActivity {
                     Bitmap bitmap = PhotoUtils.getBitmapFromUri(cropImageUri, this);
                     if (bitmap != null) {
                         showImages(bitmap);
+                        File file = PhotoUtils.getFileByUri(this, cropImageUri);
                         saveData(postMap(BaseApplication.userInfo.getSessionid(), BaseApplication.userInfo.getSex(), null,
-                                bitmap.toString(), sharedPreferencesHelper.isSwitchLanguage()));
+                                bitmap.toString(), sharedPreferencesHelper.isSwitchLanguage()), file);
                     }
                     break;
             }
@@ -300,10 +297,11 @@ public class UserInfoActivity extends BaseActivity {
         return map;
     }
 
-    private void saveData(final LinkedHashMap<String, String> map) {
+    private void saveData(final LinkedHashMap<String, String> map, File file) {
         showProgressBar();
         OkHttpUtils.post().url(MethodHelper.SAVE_DATA)
                 .params(map)
+                .addFile("hportrait", file.getName(), file)
                 .build().execute(new Callback<Result>() {
             @Override
             public Result parseNetworkResponse(Response response, int id) throws Exception {
@@ -332,10 +330,18 @@ public class UserInfoActivity extends BaseActivity {
                     if (map.get("hportrait") != null) {
                         BaseApplication.userInfo.setShowHportrait("file://" + cropImageUri.getPath());
                     }
-                    initData();
+                    setViewData();
                 }
             }
         });
+    }
+
+    private void setViewData() {
+        ImageLoader.getInstance().displayImage(BaseApplication.userInfo.getShowHportrait(), ivHead);
+        tvNickname.setText(BaseApplication.userInfo.getNickname());
+        tvSex.setText(BaseApplication.userInfo.getShowSex().equals("未设置") ? "" : BaseApplication.userInfo.getShowSex());
+        tvBirthday.setText(BaseApplication.userInfo.getBirthday());
+        tvAutograph.setText(BaseApplication.userInfo.getSignature());
     }
 
     /**
@@ -348,7 +354,7 @@ public class UserInfoActivity extends BaseActivity {
             @Override
             public void Onclick(String choiceTime) {
                 saveData(postMap(BaseApplication.userInfo.getSessionid(), BaseApplication.userInfo.getSex(), choiceTime,
-                        null, sharedPreferencesHelper.isSwitchLanguage()));
+                        null, sharedPreferencesHelper.isSwitchLanguage()), null);
             }
         });
         WindowManager.LayoutParams wmParams = dialog.getWindow().getAttributes();
