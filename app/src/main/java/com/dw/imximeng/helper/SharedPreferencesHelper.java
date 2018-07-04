@@ -96,4 +96,9 @@ public class SharedPreferencesHelper {
         }
         return new Gson().fromJson(result, new TypeToken<List<String>>(){}.getType());
     }
+
+    public void clearHistoricalSearch(){
+        editor.remove(HISTORICAL_SEARCH_DATA);
+        editor.apply();
+    }
 }

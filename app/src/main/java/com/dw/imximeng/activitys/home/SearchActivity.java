@@ -1,5 +1,7 @@
 package com.dw.imximeng.activitys.home;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.helper.MaDensityUtils;
 import com.dw.imximeng.helper.MethodHelper;
+import com.dw.imximeng.helper.StringUtils;
 import com.dw.imximeng.widgets.FlowGroupView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,7 +33,7 @@ import okhttp3.Response;
  * @author hjd
  * @Created_Time 2018\6\30 0030
  */
-public class SearchActivity extends BaseActivity {
+public class SearchActivity extends BaseActivity implements TextWatcher {
     @BindView(R.id.et_search)
     EditText etSearch;
     @BindView(R.id.tv_cancel)
@@ -57,6 +60,8 @@ public class SearchActivity extends BaseActivity {
                 addTextView(list.get(i), fgvHistoricalSearch);
             }
         }
+
+        etSearch.addTextChangedListener(this);
     }
 
     @Override
@@ -68,6 +73,7 @@ public class SearchActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_historical_delete:
+                sharedPreferencesHelper.clearHistoricalSearch();
                 break;
         }
     }
@@ -111,7 +117,8 @@ public class SearchActivity extends BaseActivity {
     private void addTextView(String str, FlowGroupView flowGroupView) {
         View view = View.inflate(this, R.layout.item_search, null);
         CheckBox cbItem = view.findViewById(R.id.cb_item);
-        ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT);
+        ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.MarginLayoutParams.WRAP_CONTENT,
+                ViewGroup.MarginLayoutParams.WRAP_CONTENT);
         params.setMargins(MaDensityUtils.dp2px(this, 7),
                 MaDensityUtils.dp2px(this, 7),
                 MaDensityUtils.dp2px(this, 7),
@@ -142,6 +149,58 @@ public class SearchActivity extends BaseActivity {
                     }
                 } else {
                     etSearch.setText("");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
+    }
+
+    private void searchInfoList(int area, String sessionid, int cid, String keywords, String orderby, String cpage, boolean language) {
+        showProgressBar();
+        OkHttpUtils.post().url(MethodHelper.INFORMATION_LIST)
+                .addParams("language", language ? "cn" : "mn")//中文：cn，蒙古文：mn
+                .addParams("area", String.valueOf(area))
+                .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))//非必传
+                .addParams("cid", String.valueOf(cid))//非必传，默认所有
+                .addParams("keywords", keywords)//非必传
+                .addParams("orderby", orderby)//非必传，最新发布：zxfb，收藏最多：sczd，默认zxfb
+                .addParams("cpage", cpage)//非必传，默认1
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                closeProgressBar();
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                closeProgressBar();
+                if (response.getStatus() == 1) {
+                    List<String> list = new Gson().fromJson(new Gson().toJson(response.getData()), new TypeToken<List<String>>() {
+                    }.getType());
+                    for (int i = 0; i < list.size(); i++) {
+                        addTextView(list.get(i), fgvHotSearch);
+                    }
                 }
             }
         });

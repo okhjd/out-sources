@@ -1,5 +1,9 @@
 package com.dw.imximeng.fragments.main;
 
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -9,13 +13,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dw.imximeng.R;
+import com.dw.imximeng.activitys.signIn.SignInActivity;
 import com.dw.imximeng.adapters.RegionListAdapter;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.base.BaseFragment;
 import com.dw.imximeng.bean.RegionList;
-import com.dw.imximeng.bean.UserInfo;
+import com.dw.imximeng.bean.Result;
+import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.StringUtils;
+import com.dw.imximeng.widgets.AlertDialog;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -24,7 +31,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import butterknife.OnItemLongClick;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -109,19 +115,6 @@ public class RegionFragment extends BaseFragment {
         getRegionList(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
     }
 
-    @OnClick({R.id.fl})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.fl:
-                if (tvCurrentArea1.getVisibility() == View.VISIBLE) {
-                    tvCurrentArea1.startAnimation(sato0);
-                } else {
-                    tvCurrentArea2.startAnimation(sato0);
-                }
-                break;
-        }
-    }
-
     private void getRegionList(final String sessionid, boolean language) {
         OkHttpUtils.post().url(MethodHelper.GET_REGION_LIST)
                 .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
@@ -150,8 +143,101 @@ public class RegionFragment extends BaseFragment {
     }
 
     @OnItemLongClick(R.id.lv_region)
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id){
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         //长按弹出提示框，点击确定设置默认地区
+        if (BaseApplication.userInfo.getSessionid() != null) {
+            showDialog(list.get(position));
+        } else {
+            ActivityUtils.overlay(getActivity(), SignInActivity.class);
+        }
         return false;
+    }
+
+    private void showDialog(final RegionList.DataBean item) {
+        SpannableString spannableString = new SpannableString("默认地址设置为：" + item.getName());
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#689df5"));
+        spannableString.setSpan(colorSpan, 8, spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+
+        new AlertDialog(getActivity())
+                .builder()
+                .setTitle("温馨提示")
+                .setMsg(spannableString)
+                .setPositiveButton("是的", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        postSetArea(BaseApplication.userInfo.getSessionid(), item.getId(), item.getName());
+                    }
+                })
+                .setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
+    }
+
+    private void postSetArea(final String sessionid, String areaId, final String area) {
+        showProgressBar();
+        OkHttpUtils.post().url(MethodHelper.SET_DEFAULT_AREA)
+                .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
+                .addParams("area", areaId)//地区ID
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                closeProgressBar();
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                closeProgressBar();
+                showToast(response.getMessage());
+                if (response.getStatus() == 1) {
+                    if (tvCurrentArea1.getVisibility() == View.VISIBLE) {
+                        tvCurrentArea2.setText(area);
+                        tvCurrentArea1.startAnimation(sato0);
+                    } else {
+                        tvCurrentArea1.setText(area);
+                        tvCurrentArea2.startAnimation(sato0);
+                    }
+                    getRegionList(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
+                }
+            }
+        });
+    }
+
+    private void postSetArea(String sessionid, String area, boolean language) {
+        showProgressBar();
+        OkHttpUtils.post().url(MethodHelper.USER_AREA_INFO)
+                .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
+                .addParams("area", area)//地区ID
+                .addParams("language", language ? "cn" : "mn")//中文：cn，蒙古文：mn
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                closeProgressBar();
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                closeProgressBar();
+                if (response.getStatus() == 1) {
+
+                }
+            }
+        });
     }
 }

@@ -3,6 +3,7 @@ package com.dw.imximeng.widgets;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.SpannableString;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +81,17 @@ public class AlertDialog {
 	public AlertDialog setMsg(String msg) {
 		showMsg = true;
 		if ("".equals(msg)) {
+			mTvContent.setText("内容");
+			mTvContent.setVisibility(View.GONE);
+		} else {
+			mTvContent.setText(msg);
+		}
+		return this;
+	}
+
+	public AlertDialog setMsg(SpannableString msg) {
+		showMsg = true;
+		if ("".equals(msg.toString())) {
 			mTvContent.setText("内容");
 			mTvContent.setVisibility(View.GONE);
 		} else {

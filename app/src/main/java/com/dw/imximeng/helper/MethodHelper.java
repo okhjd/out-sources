@@ -70,4 +70,12 @@ public interface MethodHelper {
     String BANK_LIST = BuildConfig.API_ENV + "/member/app/user/bcodeList";
     //分享信息
     String SHARE_INFO = BuildConfig.API_ENV + "/member/app/user/shareInfo";
+    //广告信息列表
+    String INFORMATION_LIST = BuildConfig.API_ENV + "/member/app/information/informationList";
+    //地区单个信息
+    String USER_AREA_INFO = BuildConfig.API_ENV + "/member/app/user/areaInfo";
+    //设置默认地区
+    String SET_DEFAULT_AREA = BuildConfig.API_ENV + "/member/app/user/setUserArea";
+    //发布分类列表
+    String INFORMATION_CATE_LIST = BuildConfig.API_ENV + "/member/app/information/cateList";
 }

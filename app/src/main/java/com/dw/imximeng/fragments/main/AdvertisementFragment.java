@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.dw.imximeng.R;
+import com.dw.imximeng.activitys.advertisements.CityInformationActivity;
 import com.dw.imximeng.activitys.advertisements.SmallToolsActivity;
 import com.dw.imximeng.base.BaseFragment;
 import com.dw.imximeng.helper.ActivityUtils;
@@ -43,6 +44,7 @@ public class AdvertisementFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_city_service:
+                ActivityUtils.overlay(getActivity(), CityInformationActivity.class);
                 break;
             case R.id.tv_small_tools:
                 ActivityUtils.overlay(getActivity(), SmallToolsActivity.class);
