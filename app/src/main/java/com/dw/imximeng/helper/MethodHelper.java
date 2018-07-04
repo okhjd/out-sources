@@ -62,4 +62,12 @@ public interface MethodHelper {
     String SET_PAY_PASSWORD = BuildConfig.API_ENV + "/member/app/user/paypwdset";
     //登录密码设置
     String MODIFY_PASSWORD = BuildConfig.API_ENV + "/member/app/user/passwordset";
+    //身份验证（支付密码校验）
+    String USER_IDVERIFICATION = BuildConfig.API_ENV + "/member/app/user/idverification";
+    //添加银行卡
+    String ADD_BANK_CARD = BuildConfig.API_ENV + "/member/app/user/bankAdd";
+    //银行列表
+    String BANK_LIST = BuildConfig.API_ENV + "/member/app/user/bcodeList";
+    //分享信息
+    String SHARE_INFO = BuildConfig.API_ENV + "/member/app/user/shareInfo";
 }

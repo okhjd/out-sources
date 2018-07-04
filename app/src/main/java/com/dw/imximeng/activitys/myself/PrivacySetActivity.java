@@ -1,6 +1,5 @@
 package com.dw.imximeng.activitys.myself;
 
-import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -9,10 +8,10 @@ import com.dw.imximeng.R;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.MessageEvent;
-import com.dw.imximeng.bean.MyPoints;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.StringUtils;
+import com.dw.imximeng.widgets.MyClickButton;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -32,11 +31,11 @@ public class PrivacySetActivity extends BaseActivity {
     @BindView(R.id.tv_phone_privacy_title)
     TextView tvPhonePrivacyTitle;
     @BindView(R.id.sc_phone)
-    SwitchCompat scPhone;
+    MyClickButton scPhone;
     @BindView(R.id.tv_user_info_title)
     TextView tvUserInfoTitle;
     @BindView(R.id.sc_user_info)
-    SwitchCompat scUserInfo;
+    MyClickButton scUserInfo;
 
     @Override
     public int getLayoutId() {
@@ -46,21 +45,42 @@ public class PrivacySetActivity extends BaseActivity {
     @Override
     public void initView() {
         setTitle("隐私设置");
+
+        scPhone.setOnMbClickListener(new MyClickButton.OnMClickListener() {
+            @Override
+            public void onClick(boolean isRight) {
+                String type = MethodHelper.PRIVACY_PHONE_NUM;
+                if (type.isEmpty()) {
+                    return;
+                }
+                postPrivacySet(BaseApplication.userInfo.getSessionid(), type, isRight ? "1" : "2", sharedPreferencesHelper.isSwitchLanguage());
+            }
+        });
+        scUserInfo.setOnMbClickListener(new MyClickButton.OnMClickListener() {
+            @Override
+            public void onClick(boolean isRight) {
+                String type = MethodHelper.PRIVACY_HOME_PAGE;
+                if (type.isEmpty()) {
+                    return;
+                }
+                postPrivacySet(BaseApplication.userInfo.getSessionid(), type, isRight ? "1" : "2", sharedPreferencesHelper.isSwitchLanguage());
+            }
+        });
     }
 
     @Override
     public void initData() {
         if (BaseApplication.userInfo.getSessionid() != null) {
             if (BaseApplication.userInfo.getNumopen().equals("1")) {//开启
-                scPhone.setChecked(true);
+                scPhone.setRight(true);
             } else if (BaseApplication.userInfo.getNumopen().equals("2")) {//关闭
-                scPhone.setChecked(false);
+                scPhone.setRight(false);
             }
 
             if (BaseApplication.userInfo.getHpageopen().equals("1")) {//开启
-                scUserInfo.setChecked(true);
+                scUserInfo.setRight(true);
             } else if (BaseApplication.userInfo.getHpageopen().equals("2")) {//关闭
-                scUserInfo.setChecked(false);
+                scUserInfo.setRight(false);
             }
         }
 
@@ -112,11 +132,11 @@ public class PrivacySetActivity extends BaseActivity {
         boolean isChecked = false;
         switch (view.getId()) {
             case R.id.sc_phone:
-                isChecked = scPhone.isChecked();
+                isChecked = scPhone.isRight();
                 type = MethodHelper.PRIVACY_PHONE_NUM;
                 break;
             case R.id.sc_user_info:
-                isChecked = scUserInfo.isChecked();
+                isChecked = scUserInfo.isRight();
                 type = MethodHelper.PRIVACY_HOME_PAGE;
                 break;
         }

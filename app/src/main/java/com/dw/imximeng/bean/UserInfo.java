@@ -87,6 +87,7 @@ public class UserInfo{
         private boolean issign;
         private boolean isunread;
         private String sessionid;
+        private boolean ispaypwd;
 
         public String getId() {
             return id;
@@ -258,5 +259,13 @@ public class UserInfo{
         public void setSessionid(String sessionid) {
             this.sessionid = sessionid;
         }
-//    }
+
+    public boolean isIspaypwd() {
+        return ispaypwd;
+    }
+
+    public void setIspaypwd(boolean ispaypwd) {
+        this.ispaypwd = ispaypwd;
+    }
+    //    }
 }

@@ -35,6 +35,11 @@ public final class ActivityUtils {
         return (T) serializable;
     }
 
+    public static <T> T getParcelableExtra(Intent intent) {
+        Parcelable parcelable = intent.getParcelableExtra(PARCELABLE_EXTRA_KEY);
+        return (T) parcelable;
+    }
+
     public static String getStringExtra(Activity activity) {
         String string = activity.getIntent().getStringExtra(STRING_EXTRA_KEY);
         activity = null;
@@ -199,6 +204,15 @@ public final class ActivityUtils {
         Intent intent = new Intent();
         setFlags(intent, flags);
         putSerializableExtra(intent, serializable);
+        if (isActivity(context)) return;
+        ((Activity) context).setResult(flags, intent);
+        ((Activity) context).finish();
+    }
+
+    public static void setResult(Context context, int flags, Parcelable parcelable) {
+        Intent intent = new Intent();
+        setFlags(intent, flags);
+        putParcelableExtra(intent, parcelable);
         if (isActivity(context)) return;
         ((Activity) context).setResult(flags, intent);
         ((Activity) context).finish();

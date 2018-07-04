@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MyClickButton">
+        <attr name="isopen" format="boolean"/>
+        <attr name="open_paint_color" format="color"/>
+        <attr name="close_paint_color" format="color"/>
+        <attr name="circle_paint_color" format="color"/>
+        <attr name="small_padding" format="integer"/>
+        <attr name="speed" format="integer"/>
+        <attr name="speedtime" format="integer"/>
+    </declare-styleable>
+</resources>

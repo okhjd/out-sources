@@ -13,6 +13,7 @@ import com.dw.imximeng.adapters.SetPaymentAdapter;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.Result;
+import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.MyCountDownTimer;
 import com.dw.imximeng.helper.StringUtils;
@@ -89,12 +90,14 @@ public class PaymentPasswordActivity extends BaseActivity implements ViewPager.O
 
     private View setPhone(){
         View view = LayoutInflater.from(this).inflate(R.layout.item_payment_phone, null);
-        final EditText etAccountNum = (EditText)view.findViewById(R.id.et_account_number);
+        final TextView etAccountNum = (TextView)view.findViewById(R.id.et_account_number);
         final EditText etVerificationCode = (EditText)view.findViewById(R.id.et_verification_code);
 
         TextView tvVerificationCode = (TextView)view.findViewById(R.id.tv_verification_code);
 
         final MyCountDownTimer myCountDownTimer = new MyCountDownTimer(60000, 1000, tvVerificationCode);
+
+        etAccountNum.setText(BaseApplication.userInfo.getPhone());
 
         tvVerificationCode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,7 +247,8 @@ public class PaymentPasswordActivity extends BaseActivity implements ViewPager.O
                 closeProgressBar();
                 showToast(response.getMessage());
                 if (response.getStatus() == 1) {
-                    finish();
+                    BaseApplication.userInfo.setIspaypwd(true);
+                    ActivityUtils.setResult(PaymentPasswordActivity.this, RESULT_OK,"");
                 }
             }
         });

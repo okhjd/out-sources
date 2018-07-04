@@ -12,7 +12,7 @@
         android:layout_marginLeft="38dp"
         android:orientation="horizontal"
         android:background="@drawable/shape_margin">
-        <EditText
+        <TextView
             android:id="@+id/et_account_number"
             style="@style/EditTextTheme"
             android:layout_width="0dp"

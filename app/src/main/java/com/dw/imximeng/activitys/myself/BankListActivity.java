@@ -1,19 +1,15 @@
 package com.dw.imximeng.activitys.myself;
 
 import android.util.Log;
-import android.view.View;
 import android.widget.ListView;
 
 import com.dw.imximeng.R;
-import com.dw.imximeng.adapters.BankCardListAdapter;
+import com.dw.imximeng.adapters.BankListAdapter;
 import com.dw.imximeng.base.BaseActivity;
-import com.dw.imximeng.base.BaseApplication;
-import com.dw.imximeng.bean.BankCard;
-import com.dw.imximeng.bean.MyWallets;
+import com.dw.imximeng.bean.Bank;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MethodHelper;
-import com.dw.imximeng.helper.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -23,59 +19,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
+import butterknife.OnItemClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
 /**
  * @author hjd
- * @Created_Time 2018\7\3 0003
+ * @create-time 2018-07-04 11:13:34
  */
-public class MyBankCardActivity extends BaseActivity {
+public class BankListActivity extends BaseActivity {
+
     @BindView(R.id.lv_bank_card)
     ListView lvBankCard;
-
-    private List<BankCard> list = new ArrayList<>();
-    private BankCardListAdapter adapter;
+    private List<Bank> list = new ArrayList<>();
+    private BankListAdapter adapter;
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_bank_card;
+        return R.layout.activity_bank_list;
     }
 
     @Override
     public void initView() {
-        setTitle("我的银行卡");
-
-        adapter = new BankCardListAdapter(this, list, R.layout.item_bank_card);
+        setTitle("银行列表");
+        adapter = new BankListAdapter(this, list, R.layout.item_bank);
         lvBankCard.setAdapter(adapter);
-
-        if (list.isEmpty()){
-            lvBankCard.setVisibility(View.GONE);
-        }
     }
 
     @Override
     public void initData() {
-
+        getBankList(sharedPreferencesHelper.isSwitchLanguage());
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        getBankCard(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
+    @OnItemClick(R.id.lv_bank_card)
+    public void onItemClick(int position){
+        ActivityUtils.setResult(this, RESULT_OK, list.get(position));
     }
 
-    @OnClick(R.id.tv_add_bank_card)
-    public void onClick() {
-        ActivityUtils.overlay(this, AuthenticationActivity.class);
-    }
-
-    private void getBankCard(String sessionid, boolean language) {
+    private void getBankList(boolean language) {
         showProgressBar();
-        OkHttpUtils.post().url(MethodHelper.BANK_CARD_LIST)
+        OkHttpUtils.post().url(MethodHelper.BANK_LIST)
                 .addParams("language", language ? "cn" : "mn")//中文：cn，蒙古文：mn
-                .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
                 .build().execute(new Callback<Result>() {
             @Override
             public Result parseNetworkResponse(Response response, int id) throws Exception {
@@ -94,17 +78,10 @@ public class MyBankCardActivity extends BaseActivity {
                 closeProgressBar();
                 if (response.getStatus() == 1) {
                     String data = new Gson().toJson(response.getData());
-                    List<BankCard> resultList = new Gson().fromJson(data, new TypeToken<List<BankCard>>(){}.getType());
-
+                    List<Bank> bankList = new Gson().fromJson(data, new TypeToken<List<Bank>>(){}.getType());
                     list.clear();
-                    list.addAll(resultList);
+                    list.addAll(bankList);
                     adapter.notifyDataSetChanged();
-
-                    if (list.isEmpty()){
-                        lvBankCard.setVisibility(View.GONE);
-                    }else {
-                        lvBankCard.setVisibility(View.VISIBLE);
-                    }
                 }
             }
         });

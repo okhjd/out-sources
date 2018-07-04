@@ -80,6 +80,9 @@
         <activity android:name=".activitys.myself.WalletRecordActivity" />
         <activity android:name=".activitys.myself.MyBankCardActivity" />
         <activity android:name=".activitys.myself.ModifyPasswordActivity" />
+        <activity android:name=".activitys.myself.AuthenticationActivity" />
+        <activity android:name=".activitys.myself.PerfectInformationActivity" />
+        <activity android:name=".activitys.myself.BankListActivity" />
 
 
         <meta-data

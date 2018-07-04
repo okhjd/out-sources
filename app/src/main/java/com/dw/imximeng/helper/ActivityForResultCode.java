@@ -7,4 +7,8 @@ package com.dw.imximeng.helper;
 public interface ActivityForResultCode {
     int MODIFY_NICKNAME = 1;
     int MODIFY_AUTOGRAPH = 2;
+
+    int BNAK_CODE = 3;
+    int MY_SCAN_REQUEST_CODE = 4;
+    int SET_PAY_PASSWORD = 5;
 }

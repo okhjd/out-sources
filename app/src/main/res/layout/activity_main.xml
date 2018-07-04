@@ -45,6 +45,7 @@
             android:button="@null"
             android:text="地区"
             android:textSize="10sp"
+            android:drawablePadding="5dp"
             android:textColor="@drawable/select_down_typeface"/>
         <RadioButton
             android:id="@+id/rb_advertisement"
@@ -53,6 +54,7 @@
             android:button="@null"
             android:text="广告"
             android:textSize="10sp"
+            android:drawablePadding="6dp"
             android:textColor="@drawable/select_down_typeface"/>
         <RadioButton
             android:id="@+id/rb_myself"
@@ -61,6 +63,7 @@
             android:button="@null"
             android:text="我"
             android:textSize="10sp"
+            android:drawablePadding="6dp"
             android:textColor="@drawable/select_down_typeface"/>
 
     </RadioGroup>

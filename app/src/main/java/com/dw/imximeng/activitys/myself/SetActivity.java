@@ -1,5 +1,6 @@
 package com.dw.imximeng.activitys.myself;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.MessageEvent;
 import com.dw.imximeng.bean.UserInfo;
+import com.dw.imximeng.helper.ActivityForResultCode;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.DataCleanManager;
 import com.dw.imximeng.widgets.AlertDialog;
@@ -30,6 +32,8 @@ public class SetActivity extends BaseActivity {
     Button tvUserExit;
     @BindView(R.id.tv_cache_size)
     TextView tvCacheSize;
+    @BindView(R.id.tv_not_set_pay)
+    TextView tvNotSetPay;
 
     @Override
     public int getLayoutId() {
@@ -44,6 +48,12 @@ public class SetActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
             tvCacheSize.setText("0MB");
+        }
+
+        if (BaseApplication.userInfo.isIspaypwd()){
+            tvNotSetPay.setText("修改");
+        }else {
+            tvNotSetPay.setText("未设置");
         }
     }
 
@@ -95,7 +105,7 @@ public class SetActivity extends BaseActivity {
                 ActivityUtils.overlay(this, OnlineServiceActivity.class);
                 break;
             case R.id.rl_payment_password:
-                ActivityUtils.overlay(this, PaymentPasswordActivity.class);
+                ActivityUtils.overlay(this, PaymentPasswordActivity.class, ActivityForResultCode.SET_PAY_PASSWORD);
                 break;
             case R.id.rl_modify_password:
                 ActivityUtils.overlay(this, ModifyPasswordActivity.class);
@@ -124,5 +134,19 @@ public class SetActivity extends BaseActivity {
 
                     }
                 }).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            if (requestCode == ActivityForResultCode.SET_PAY_PASSWORD){
+                if (BaseApplication.userInfo.isIspaypwd()){
+                    tvNotSetPay.setText("修改");
+                }else {
+                    tvNotSetPay.setText("未设置");
+                }
+            }
+        }
     }
 }

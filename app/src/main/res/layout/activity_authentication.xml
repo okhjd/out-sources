@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/white">
+
+    <include layout="@layout/common_title_bar"/>
+
+    <View style="@style/ViewLineHorizontal"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请输入支付密码，以验证身份"
+        android:textSize="16sp"
+        android:textColor="#333333"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="20dp"/>
+
+    <com.dw.imximeng.widgets.ItemPasswordLayout
+        android:id="@+id/item_password"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:background="@android:color/transparent"
+        android:cursorVisible="false"
+        android:enabled="true"
+        android:focusable="true"
+        android:inputType="number"
+        android:maxLength="6" />
+</LinearLayout>

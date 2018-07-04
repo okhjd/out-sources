@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <include layout="@layout/common_title_bar"/>
+
+    <EditText
+        android:id="@+id/et_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="35dp"
+        android:textSize="15sp"
+        android:textColor="#333333"
+        android:textColorHint="@color/text_color_hint"
+        android:hint="请输入姓名"
+        android:singleLine="true"
+        android:background="@drawable/shape_margin"/>
+
+    <EditText
+        android:id="@+id/et_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textColor="#333333"
+        android:textColorHint="@color/text_color_hint"
+        android:hint="请输入电话号码"
+        android:maxLength="12"
+        android:inputType="phone"
+        android:singleLine="true"
+        android:background="@drawable/shape_margin"/>
+
+    <TextView
+        android:id="@+id/tv_bank"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        android:layout_marginRight="37dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textColor="#333333"
+        android:textColorHint="@color/text_color_hint"
+        android:hint="请选择银行"
+        android:singleLine="true"
+        android:drawableRight="@mipmap/pic7"
+        android:background="@drawable/shape_margin"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_margin"
+        android:layout_marginRight="37dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="10dp">
+        <EditText
+            android:id="@+id/et_bank_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            android:inputType="number"
+            android:textColorHint="@color/text_color_hint"
+            android:hint="请输入储蓄卡卡号"
+            android:background="@color/white"
+            android:singleLine="true"
+            android:layout_toLeftOf="@+id/iv_picture"
+            android:maxLength="21" />
+        <ImageView
+            android:id="@+id/iv_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/pic81"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_complete"
+        style="@style/TextViewButtonTheme"
+        android:layout_marginRight="37dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginTop="30dp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:text="确认添加"
+        android:background="@drawable/shape_modify_btn"/>
+</LinearLayout>

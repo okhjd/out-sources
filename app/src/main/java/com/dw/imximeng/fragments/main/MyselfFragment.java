@@ -1,5 +1,6 @@
 package com.dw.imximeng.fragments.main;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -13,15 +14,22 @@ import com.dw.imximeng.activitys.signIn.SignInActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.base.BaseFragment;
 import com.dw.imximeng.bean.MessageEvent;
+import com.dw.imximeng.bean.Result;
+import com.dw.imximeng.bean.ShareInfo;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.ImageLoaderUtils;
 import com.dw.imximeng.helper.MaDensityUtils;
+import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.widgets.ImageViewRoundOval;
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,6 +37,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * @author hjd
@@ -56,6 +66,8 @@ public class MyselfFragment extends BaseFragment {
     TextView tvMyRelease;
     @BindView(R.id.tv_share)
     TextView tvShare;
+
+    private ShareInfo shareInfo;
 
     @Override
     public int getLayoutId() {
@@ -134,19 +146,18 @@ public class MyselfFragment extends BaseFragment {
                 }
                 break;
             case R.id.tv_share://分享
+                if (shareInfo == null) {
+                    return;
+                }
+                UMImage umImage = new UMImage(getActivity(), shareInfo.getShare_icon());
+                UMWeb web = new UMWeb(shareInfo.getShare_url());
+                web.setTitle(shareInfo.getShare_title());//标题
+                web.setThumb(umImage);  //缩略图
+                web.setDescription(shareInfo.getShare_brief());//描述
                 new ShareAction(getActivity())
-                        .withText("hello")
+                        .withMedia(web)
                         .setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setCallback(shareListener).open();
-
-//                UMWeb  web = new UMWeb(BaseApplication.userSiteInfo.getData().get);
-//                web.setTitle("This is music title");//标题
-//                web.setThumb(thumb);  //缩略图
-//                web.setDescription("my description");//描述
-//                new ShareAction(activity)
-//                        //分享的平台
-//                        .setPlatform(SHARE_MEDIA.QQ)
-//                        .withMedia(web).setCallback(shareListener).share();
                 break;
         }
     }
@@ -166,7 +177,7 @@ public class MyselfFragment extends BaseFragment {
          */
         @Override
         public void onResult(SHARE_MEDIA platform) {
-            showToast("成功了");
+            showToast("分享成功");
         }
 
         /**
@@ -185,7 +196,7 @@ public class MyselfFragment extends BaseFragment {
          */
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            showToast("取消了");
+            showToast("分享取消");
         }
     };
 
@@ -203,10 +214,41 @@ public class MyselfFragment extends BaseFragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        getShareInfo();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
+    }
+
+    private void getShareInfo() {
+        OkHttpUtils.post().url(MethodHelper.SHARE_INFO)
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+
+                if (response.getStatus() == 1) {
+                    String data = new Gson().toJson(response.getData());
+                    shareInfo = new Gson().fromJson(data, ShareInfo.class);
+                }
+            }
+        });
     }
 }
