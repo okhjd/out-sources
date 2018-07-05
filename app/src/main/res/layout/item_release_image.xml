@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="79dp"
+    android:layout_height="79dp">
+    <ImageView
+        android:id="@+id/iv_item"
+        android:layout_width="79dp"
+        android:layout_height="79dp"
+        android:src="@mipmap/pic39"
+        android:scaleType="centerInside"/>
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/pic40"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>

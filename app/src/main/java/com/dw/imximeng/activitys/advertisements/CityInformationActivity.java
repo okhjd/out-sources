@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import com.dw.imximeng.R;
+import com.dw.imximeng.activitys.signIn.SignInActivity;
 import com.dw.imximeng.adapters.GvCateListAdapter;
 import com.dw.imximeng.adapters.InformationAdapter;
 import com.dw.imximeng.adapters.VpCateListAdapter;
@@ -22,6 +24,7 @@ import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.StringUtils;
 import com.dw.imximeng.widgets.AutoListView;
 import com.dw.imximeng.widgets.ImageViewRoundOval;
+import com.dw.imximeng.widgets.SigninAlertDialog;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -31,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -47,6 +51,10 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     ImageViewRoundOval ivHead;
     @BindView(R.id.lv_info)
     AutoListView lvInfo;
+    @BindView(R.id.iv_add)
+    ImageView ivAdd;
+    @BindView(R.id.iv_sign_in)
+    ImageView ivSignIn;
     private VpCateListAdapter mAdapter;
     private List<CateList.CateItem> list = new ArrayList<>();
     private List<GridView> gridList = new ArrayList<>();
@@ -55,6 +63,8 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     private InformationAdapter adapter;
     private List<Information.ListBean> listBeans = new ArrayList<>();
     private int page;
+
+    private long mClickTime = 0;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -77,6 +87,11 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
         ivHead.setRoundRadius(MaDensityUtils.dp2px(this, 5));//圆角大小
         if (BaseApplication.userInfo.getShowHportrait() != null) {
             ImageLoader.getInstance().displayImage(BaseApplication.userInfo.getShowHportrait(), ivHead);
+        }
+        if (BaseApplication.userInfo.isIssign()) {
+            ivSignIn.setVisibility(View.GONE);
+        } else {
+            ivSignIn.setVisibility(View.VISIBLE);
         }
 
         adapter = new InformationAdapter(this, listBeans, R.layout.item_collection);
@@ -134,7 +149,6 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
                         gridView.setOnItemClickListener(CityInformationActivity.this);
                         gridList.add(gridView);
                     }
-
                     mAdapter.add(gridList);
                 }
             }
@@ -178,12 +192,12 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
                     String data = new Gson().toJson(response.getData());
                     Information information = new Gson().fromJson(data, Information.class);
 
-                    if (page==1){
+                    if (page == 1) {
                         listBeans.clear();
                     }
                     lvInfo.setResultPage(1, information.getList().size());
                     listBeans.addAll(information.getList());
-                    adapter.notifyDataSetChanged();
+                    adapter.setComment(information.getCateList().get(0).getIscomment().equals("1"));
                 }
             }
         });
@@ -191,7 +205,7 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
 
     @Override
     public void onRefresh() {
-        page=1;
+        page = 1;
         getInfoList(BaseApplication.userInfo.getArea(),
                 BaseApplication.userInfo.getSessionid(), "", "", "",
                 String.valueOf(page), sharedPreferencesHelper.isSwitchLanguage());
@@ -203,5 +217,73 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
         getInfoList(BaseApplication.userInfo.getArea(),
                 BaseApplication.userInfo.getSessionid(), "", "", "",
                 String.valueOf(page), sharedPreferencesHelper.isSwitchLanguage());
+    }
+
+    @OnClick({R.id.tv_title, R.id.iv_add, R.id.iv_sign_in})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_add:
+                ActivityUtils.overlay(this, ReleaseInfoActivity.class, city);
+                break;
+            case R.id.iv_sign_in:
+                if (BaseApplication.userInfo.getSessionid() != null) {
+                    userSignIn(BaseApplication.userInfo.getSessionid());
+                } else {
+                    ActivityUtils.overlay(this, SignInActivity.class);
+                }
+                break;
+            case R.id.tv_title:
+                if (System.currentTimeMillis() - mClickTime < 800) {
+                    //此处做双击具体业务逻辑
+                    getCateList(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
+                    lvInfo.firstOnRefresh();
+                } else {
+                    mClickTime = System.currentTimeMillis();
+                    //表示单击，此处也可以做单击的操作
+                }
+                break;
+        }
+    }
+
+    private void userSignIn(String sessionid) {
+        showProgressBar();
+        OkHttpUtils.post().url(MethodHelper.USER_SIGN_IN)
+                .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))//非必传
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+                closeProgressBar();
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                closeProgressBar();
+                showToast(response.getMessage());
+                if (response.getStatus() == 1) {
+                    showSignInDialog(3);
+                }
+            }
+        });
+    }
+
+    private void showSignInDialog(int num) {
+        new SigninAlertDialog(this)
+                .builder()
+                .setTitle("签到成功")
+                .setNum("+" + String.valueOf(num))
+                .setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BaseApplication.userInfo.setIssign(true);
+                        ivSignIn.setVisibility(View.GONE);
+                    }
+                }).show();
     }
 }

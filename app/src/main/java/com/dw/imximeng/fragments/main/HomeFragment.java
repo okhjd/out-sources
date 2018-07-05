@@ -4,16 +4,17 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.WebActivity;
+import com.dw.imximeng.activitys.advertisements.ReleaseInfoActivity;
 import com.dw.imximeng.activitys.home.MyCollectionActivity;
 import com.dw.imximeng.activitys.home.SearchActivity;
 import com.dw.imximeng.activitys.notices.NoticeListActivity;
+import com.dw.imximeng.activitys.signIn.SignInActivity;
 import com.dw.imximeng.adapters.GlideImageLoader;
 import com.dw.imximeng.app.ActivityExtras;
 import com.dw.imximeng.base.BaseApplication;
@@ -32,8 +33,6 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -77,7 +76,7 @@ public class HomeFragment extends BaseFragment implements OnBannerClickListener 
         banner.startAutoPlay();
     }
 
-    @OnClick({R.id.tv_language,R.id.ll_more,R.id.iv_search ,R.id.tv_collection})
+    @OnClick({R.id.tv_language, R.id.ll_more, R.id.iv_search, R.id.tv_collection, R.id.iv_release})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_language:
@@ -94,6 +93,13 @@ public class HomeFragment extends BaseFragment implements OnBannerClickListener 
                 break;
             case R.id.tv_collection:
                 ActivityUtils.overlay(getActivity(), MyCollectionActivity.class);
+                break;
+            case R.id.iv_release:
+                if (BaseApplication.userInfo.getSessionid() != null) {
+                    ActivityUtils.overlay(getActivity(), ReleaseInfoActivity.class, BaseApplication.userInfo.getArea());
+                } else {
+                    ActivityUtils.overlay(getActivity(), SignInActivity.class);
+                }
                 break;
         }
     }
@@ -168,7 +174,7 @@ public class HomeFragment extends BaseFragment implements OnBannerClickListener 
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(indexData.getLbList().get(position - 1).getArd_schemeurl()));
                     startActivity(intent);
-                }catch (ActivityNotFoundException e){
+                } catch (ActivityNotFoundException e) {
                     showToast("找不到APP");
                 }
 

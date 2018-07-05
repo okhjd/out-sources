@@ -52,6 +52,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     public void initView() {
         radio.setOnCheckedChangeListener(this);
         viewpager.addOnPageChangeListener(this);
+        viewpager.setOffscreenPageLimit(1);
         setupViewPager(viewpager);
     }
 

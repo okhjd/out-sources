@@ -78,4 +78,6 @@ public interface MethodHelper {
     String SET_DEFAULT_AREA = BuildConfig.API_ENV + "/member/app/user/setUserArea";
     //发布分类列表
     String INFORMATION_CATE_LIST = BuildConfig.API_ENV + "/member/app/information/cateList";
+    //用户签到
+    String USER_SIGN_IN = BuildConfig.API_ENV + "/member/app/user/signIn";
 }

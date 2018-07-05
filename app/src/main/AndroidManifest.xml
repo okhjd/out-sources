@@ -84,6 +84,7 @@
         <activity android:name=".activitys.myself.PerfectInformationActivity" />
         <activity android:name=".activitys.myself.BankListActivity" />
         <activity android:name=".activitys.advertisements.CityInformationActivity" />
+        <activity android:name=".activitys.advertisements.ReleaseInfoActivity" />
 
 
         <meta-data

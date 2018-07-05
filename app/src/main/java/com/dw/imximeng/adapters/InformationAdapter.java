@@ -13,6 +13,8 @@ import com.dw.imximeng.widgets.GridViewNoScroll;
 import com.dw.imximeng.widgets.ImageViewRoundOval;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
@@ -20,8 +22,15 @@ import java.util.List;
  * @Created_Time 2018\6\28 0028
  */
 public class InformationAdapter extends CommonAdapter<Information.ListBean> {
+    private boolean isComment = false;
+
     public InformationAdapter(Context context, List<Information.ListBean> mDatas, int itemLayoutId) {
         super(context, mDatas, itemLayoutId);
+    }
+
+    public InformationAdapter(Context context, List<Information.ListBean> mDatas, int itemLayoutId, boolean isComment) {
+        super(context, mDatas, itemLayoutId);
+        this.isComment = isComment;
     }
 
     @Override
@@ -34,25 +43,55 @@ public class InformationAdapter extends CommonAdapter<Information.ListBean> {
         helper.setText(R.id.tv_time, item.getShowTime());
 
         TextView tvNew = helper.getView(R.id.tv_new);
-        if (item.isIs_new()){
+        if (item.isIs_new()) {
             tvNew.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             tvNew.setVisibility(View.GONE);
         }
         TextView tvTop = helper.getView(R.id.tv_top);
-        if (item.getIs_stick().equals("1")){
+        if (item.getIs_stick().equals("1")) {
             tvTop.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             tvTop.setVisibility(View.GONE);
         }
 
         helper.setText(R.id.tv_title, item.getTitle());
         helper.setText(R.id.tv_content, item.getContent());
         helper.setText(R.id.tv_phone, item.getShowTelephone());
-        helper.setText(R.id.tv_collection, item.getCommentnum()+"");
-        helper.setText(R.id.tv_comment, item.getCollectnum()+"");
+        helper.setText(R.id.tv_collection, item.getCommentnum() + "");
+        TextView tvComment = helper.getView(R.id.tv_comment);
+        tvComment.setText(item.getCollectnum() + "");
 
-        GridViewNoScroll gvImage = helper.getView(R.id.gv_image);
+        if (isComment){
+            tvComment.setVisibility(View.VISIBLE);
+        }else {
+            tvComment.setVisibility(View.GONE);
+        }
+
+            GridViewNoScroll gvImage = helper.getView(R.id.gv_image);
         gvImage.setAdapter(new GvInfoImageAdapter(mContext, item.getImgList(), R.layout.item_image));
+
+        ImageView ivImage = helper.getView(R.id.iv_image);
+        if (item.getImgList().size() > 1) {
+            gvImage.setAdapter(new GvInfoImageAdapter(mContext, item.getImgList(), R.layout.item_image));
+            ivImage.setVisibility(View.GONE);
+            gvImage.setVisibility(View.VISIBLE);
+        } else if (item.getImgList().size() == 1) {
+            ImageLoader.getInstance().displayImage(item.getImgList().get(0).getShowImg(), ivImage);
+            ivImage.setVisibility(View.VISIBLE);
+            gvImage.setVisibility(View.GONE);
+        } else {
+            ivImage.setVisibility(View.GONE);
+            gvImage.setVisibility(View.GONE);
+        }
+    }
+
+    public boolean isComment() {
+        return isComment;
+    }
+
+    public void setComment(boolean comment) {
+        isComment = comment;
+        notifyDataSetChanged();
     }
 }
