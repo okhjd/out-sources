@@ -29,7 +29,7 @@ import butterknife.OnClick;
  */
 public class SetActivity extends BaseActivity {
     @BindView(R.id.tv_user_exit)
-    Button tvUserExit;
+    TextView tvUserExit;
     @BindView(R.id.tv_cache_size)
     TextView tvCacheSize;
     @BindView(R.id.tv_not_set_pay)

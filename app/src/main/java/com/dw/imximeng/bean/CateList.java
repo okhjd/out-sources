@@ -15,6 +15,7 @@ public class CateList {
         private String name;
         private String icon;
         private List<AttrList> attrList;
+        private boolean check;
 
         public int getId() {
             return id;
@@ -46,6 +47,14 @@ public class CateList {
 
         public void setAttrList(List<AttrList> attrList) {
             this.attrList = attrList;
+        }
+
+        public boolean isCheck() {
+            return check;
+        }
+
+        public void setCheck(boolean check) {
+            this.check = check;
         }
     }
 

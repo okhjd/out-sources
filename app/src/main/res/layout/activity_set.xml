@@ -264,7 +264,7 @@
 
     </LinearLayout>
 
-    <Button
+    <TextView
         android:id="@+id/tv_user_exit"
         style="@style/TextViewButtonTheme"
         android:layout_marginRight="18dp"

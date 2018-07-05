@@ -17,15 +17,19 @@ import com.dw.imximeng.activitys.signIn.SignInActivity;
 import com.dw.imximeng.adapters.RegionListAdapter;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.base.BaseFragment;
+import com.dw.imximeng.bean.MessageEvent;
 import com.dw.imximeng.bean.RegionList;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MethodHelper;
+import com.dw.imximeng.helper.SharedPreferencesHelper;
 import com.dw.imximeng.helper.StringUtils;
 import com.dw.imximeng.widgets.AlertDialog;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +119,14 @@ public class RegionFragment extends BaseFragment {
         getRegionList(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        getArea(BaseApplication.userInfo.getSessionid(),
+                BaseApplication.userInfo.getArea(),
+                sharedPreferencesHelper.isSwitchLanguage());
+    }
+
     private void getRegionList(final String sessionid, boolean language) {
         OkHttpUtils.post().url(MethodHelper.GET_REGION_LIST)
                 .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
@@ -176,7 +188,7 @@ public class RegionFragment extends BaseFragment {
                 }).show();
     }
 
-    private void postSetArea(final String sessionid, String areaId, final String area) {
+    private void postSetArea(final String sessionid, final String areaId, final String area) {
         showProgressBar();
         OkHttpUtils.post().url(MethodHelper.SET_DEFAULT_AREA)
                 .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
@@ -206,17 +218,22 @@ public class RegionFragment extends BaseFragment {
                         tvCurrentArea1.setText(area);
                         tvCurrentArea2.startAnimation(sato0);
                     }
+                    BaseApplication.userInfo.setArea(areaId);
                     getRegionList(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
+
+                    MessageEvent messageEvent = new MessageEvent();
+                    messageEvent.setMsgCode(MessageEvent.MessageType.AREA);
+                    EventBus.getDefault().post(messageEvent);
                 }
             }
         });
     }
 
-    private void postSetArea(String sessionid, String area, boolean language) {
+    private void getArea(String sessionid, String area, boolean language) {
         showProgressBar();
         OkHttpUtils.post().url(MethodHelper.USER_AREA_INFO)
                 .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
-                .addParams("area", area)//地区ID
+                .addParams("area", StringUtils.stringsIsEmpty(area))//地区ID
                 .addParams("language", language ? "cn" : "mn")//中文：cn，蒙古文：mn
                 .build().execute(new Callback<Result>() {
             @Override
@@ -235,7 +252,10 @@ public class RegionFragment extends BaseFragment {
             public void onResponse(Result response, int id) {
                 closeProgressBar();
                 if (response.getStatus() == 1) {
-
+                    String data = new Gson().toJson(response.getData());
+                    RegionList.DataBean dataBean = new Gson().fromJson(data, RegionList.DataBean.class);
+                    tvCurrentArea1.setText(dataBean.getName());
+                    tvCurrentArea2.setText(dataBean.getName());
                 }
             }
         });

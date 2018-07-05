@@ -111,6 +111,9 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     getUserInfo(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
                 }
                 break;
+            case SWITCH_PAGE:
+                viewpager.setCurrentItem(1);
+                break;
         }
 
     }

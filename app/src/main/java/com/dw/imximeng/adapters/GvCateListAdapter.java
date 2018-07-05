@@ -1,5 +1,6 @@
 package com.dw.imximeng.adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ public class GvCateListAdapter extends BaseAdapter {
         return dataList.size();
     }
     @Override
-    public Object getItem(int i) {
+    public CateList.CateItem getItem(int i) {
         return dataList.get(i);
     }
     @Override
@@ -61,6 +62,11 @@ public class GvCateListAdapter extends BaseAdapter {
         if (bean != null) {
             ImageLoader.getInstance().displayImage(bean.getIcon(), mHolder.iv_img);
             mHolder.tv_text.setText(bean.getName());
+            if (bean.isCheck()){
+                mHolder.tv_text.setTextColor(Color.parseColor("#568fed"));
+            }else {
+                mHolder.tv_text.setTextColor(Color.parseColor("#484848"));
+            }
         }
         return itemView;
     }

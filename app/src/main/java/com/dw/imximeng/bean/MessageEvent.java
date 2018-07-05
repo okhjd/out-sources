@@ -28,6 +28,8 @@ public class MessageEvent {
     public enum MessageType{
         LANGUAGE,
         REFRESH_MAIN,
-        SIGN_IN
+        SIGN_IN,
+        AREA,
+        SWITCH_PAGE
     }
 }

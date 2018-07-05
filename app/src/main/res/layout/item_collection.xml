@@ -10,7 +10,8 @@
     android:paddingRight="12dp"
     android:background="@color/white">
 
-    <ImageView
+    <com.dw.imximeng.widgets.ImageViewRoundOval
+        android:id="@+id/iv_head"
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:src="@mipmap/pic32"/>
@@ -22,12 +23,14 @@
         android:layout_marginLeft="12dp"
         android:layout_marginTop="3dp">
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="名字"
             android:textSize="14sp"
             android:textColor="#666666"/>
         <TextView
+            android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -41,6 +44,7 @@
             android:layout_marginTop="16dp"
             android:gravity="center_vertical">
             <TextView
+                android:id="@+id/tv_new"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="7dp"
@@ -51,6 +55,7 @@
                 android:background="@drawable/shape_new_collection"/>
 
             <TextView
+                android:id="@+id/tv_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="14dp"
@@ -61,6 +66,7 @@
                 android:background="@drawable/shape_top_collection"/>
 
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -71,14 +77,17 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="内容"
+            android:maxLines="3"
             android:layout_marginTop="10dp"
             android:textSize="16sp"
             android:textColor="#333333"/>
 
         <TextView
+            android:id="@+id/tv_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="详情"
@@ -86,23 +95,28 @@
             android:textSize="14sp"
             android:textColor="#699df5"/>
 
-        <LinearLayout
+        <com.dw.imximeng.widgets.GridViewNoScroll
+            android:id="@+id/gv_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="14dp">
-
-        </LinearLayout>
+            android:numColumns="3"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="20dp"/>
 
         <ImageView
             android:layout_width="80dp"
-            android:layout_height="160dp"
-            android:visibility="gone"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:maxHeight="160dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@mipmap/pic11"
