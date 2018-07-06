@@ -74,6 +74,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
     }
 
+    public void setSubmit(String str) {
+        if (getLayoutId() != 0) {
+            TextView tvSubmit = (TextView) findViewById(R.id.tv_submit);
+            tvSubmit.setText(str);
+            tvSubmit.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void showToast(String msgStr) {
         Toast.makeText(this, msgStr, Toast.LENGTH_LONG).show();
     }

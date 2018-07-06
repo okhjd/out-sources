@@ -8,25 +8,39 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dw.imximeng.R;
+import com.dw.imximeng.activitys.SelectionActivity;
+import com.dw.imximeng.adapters.GvCateListAdapter;
 import com.dw.imximeng.base.BaseActivity;
+import com.dw.imximeng.base.BaseApplication;
+import com.dw.imximeng.bean.CateList;
+import com.dw.imximeng.bean.Result;
+import com.dw.imximeng.bean.Selection;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MaDensityUtils;
+import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.PhotoUtils;
+import com.dw.imximeng.helper.StringUtils;
 import com.dw.imximeng.widgets.AlertViewDialog.AlertView;
 import com.dw.imximeng.widgets.AlertViewDialog.OnItemClickListener;
+import com.google.gson.Gson;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.Callback;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,6 +48,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * @author hjd
@@ -53,12 +69,12 @@ public class ReleaseInfoActivity extends BaseActivity {
     EditText etRelease;
     @BindView(R.id.tv_cate)
     TextView tvCate;
-    @BindView(R.id.tv_house_type)
-    TextView tvHouseType;
+//    @BindView(R.id.tv_house_type)
+//    TextView tvHouseType;
     @BindView(R.id.et_phone)
     EditText etPhone;
-    @BindView(R.id.tv_houser_size)
-    TextView tvHouserSize;
+//    @BindView(R.id.tv_houser_size)
+//    TextView tvHouserSize;
     private String city;
 
     private static final int CODE_GALLERY_REQUEST = 0xa0;
@@ -93,7 +109,7 @@ public class ReleaseInfoActivity extends BaseActivity {
 
     }
 
-    @OnClick({R.id.tv_submit, R.id.iv_add, R.id.rl_cate, R.id.rl_reenting, R.id.rl_house_type, R.id.rl_house_size})
+    @OnClick({R.id.tv_submit, R.id.iv_add, R.id.rl_cate})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_submit:
@@ -116,12 +132,7 @@ public class ReleaseInfoActivity extends BaseActivity {
                 }).show();
                 break;
             case R.id.rl_cate:
-                break;
-            case R.id.rl_reenting:
-                break;
-            case R.id.rl_house_type:
-                break;
-            case R.id.rl_house_size:
+                getCateList(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
                 break;
         }
     }
@@ -260,5 +271,45 @@ public class ReleaseInfoActivity extends BaseActivity {
             });
             llImages.addView(view);
         }
+    }
+
+    private void getCateList(String sessionid, boolean language) {
+        showProgressBar();
+        OkHttpUtils.post().url(MethodHelper.INFORMATION_CATE_LIST)
+                .addParams("language", language ? "cn" : "mn")//中文：cn，蒙古文：mn
+                .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))//中文：cn，蒙古文：mn
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+                closeProgressBar();
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                closeProgressBar();
+                if (response.getStatus() == 1) {
+                    String data = new Gson().toJson(response.getData());
+                    CateList cateList = new Gson().fromJson(data, CateList.class);
+                    ArrayList<Selection> list = new ArrayList<>();
+                    for (int i=0;i<cateList.getCateList().size();i++){
+                        Selection selection = new Selection();
+                        selection.setId(cateList.getCateList().get(i).getId()+"");
+                        selection.setName(cateList.getCateList().get(i).getName());
+                        list.add(selection);
+                    }
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data", list);
+                    bundle.putBoolean("single", true);
+                    ActivityUtils.overlay(ReleaseInfoActivity.this, SelectionActivity.class, bundle);
+                }
+            }
+        });
     }
 }

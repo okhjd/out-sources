@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author hjd
@@ -82,6 +84,14 @@ public final class ActivityUtils {
         Intent intent = new Intent(context, targetClazz);
         setFlags(intent, flags);
         putParcelableExtra(intent, parcelable);
+        context.startActivity(intent);
+        context = null;
+    }
+
+    public static void overlay(Context context, Class<? extends Activity> targetClazz, int flags, ArrayList<? extends Parcelable> parcelable) {
+        Intent intent = new Intent(context, targetClazz);
+        setFlags(intent, flags);
+        putParcelableArrayListExtra(intent, parcelable);
         context.startActivity(intent);
         context = null;
     }
@@ -239,6 +249,11 @@ public final class ActivityUtils {
     private static void putParcelableExtra(Intent intent, Parcelable parcelable) {
         if (parcelable == null) return;
         intent.putExtra(PARCELABLE_EXTRA_KEY, parcelable);
+    }
+
+    private static void putParcelableArrayListExtra(Intent intent,ArrayList<? extends Parcelable> parcelable) {
+        if (parcelable == null) return;
+        intent.putParcelableArrayListExtra(PARCELABLE_EXTRA_KEY, parcelable);
     }
 
     private static void putSerializableExtra(Intent intent, Serializable serializable) {
