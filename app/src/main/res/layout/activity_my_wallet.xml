@@ -43,6 +43,7 @@
             android:orientation="horizontal"
             android:layout_marginTop="45dp">
             <TextView
+                android:id="@+id/tv_recharge"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -144,7 +145,7 @@
             android:background="@color/white"
             android:layout_alignParentBottom="true">
             <TextView
-                android:id="@+id/tv_sign_in"
+                android:id="@+id/tv_put_forward"
                 style="@style/TextViewButtonTheme"
                 android:textSize="16sp"
                 android:textStyle="bold"

@@ -104,4 +104,8 @@ public interface MethodHelper {
     String MY_RELEASE = BuildConfig.API_ENV + "/member/app/user/informationList";
     //删除我发布的广告信息
     String DELETE_RELEASE = BuildConfig.API_ENV + "/member/app/user/informationDelete";
+    //三方账号登录
+    String KEY_LOGIN = BuildConfig.API_ENV + "/member/app/user/keyLogin";
+    //三方账号绑定
+    String BIND_KEY_ACCOUNT = BuildConfig.API_ENV + "/member/app/user/keyAccountBind";
 }

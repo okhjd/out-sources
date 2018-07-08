@@ -10,16 +10,23 @@ import android.widget.TextView;
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.WebActivity;
 import com.dw.imximeng.app.ActivityExtras;
+import com.dw.imximeng.app.AppManager;
 import com.dw.imximeng.base.BaseActivity;
+import com.dw.imximeng.base.BaseApplication;
+import com.dw.imximeng.bean.MessageEvent;
 import com.dw.imximeng.bean.Result;
+import com.dw.imximeng.bean.UserInfo;
 import com.dw.imximeng.bean.UserSiteInfo;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.MyCountDownTimer;
+import com.dw.imximeng.helper.SharedPreferencesHelper;
 import com.dw.imximeng.helper.StringUtils;
 import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -47,6 +54,19 @@ public class FastRegistrationActivity extends BaseActivity {
     MyCountDownTimer myCountDownTimer;
 
     private String userProtocol = "";
+
+    private String type;
+    private String key;
+
+    @Override
+    protected void init(Bundle savedInstanceState) {
+        super.init(savedInstanceState);
+        Bundle bundle = ActivityUtils.getParcelableExtra(this);
+        if (bundle != null) {
+            type = bundle.getString(ActivityExtras.EXTRAS_THIRD_PARTY_TYPE);
+            key = bundle.getString(ActivityExtras.EXTRAS_THIRD_PARTY_KEY);
+        }
+    }
 
     @Override
     public int getLayoutId() {
@@ -87,10 +107,14 @@ public class FastRegistrationActivity extends BaseActivity {
                     showToast("请同意用户协议");
                     return;
                 }
-                bundle.clear();
-                bundle.putString(ActivityExtras.EXTRAS_SET_PASSWORD_PHONE, phone);
-                bundle.putBoolean(ActivityExtras.EXTRAS_IS_REGISTER, true);
-                ActivityUtils.forward(this, ConfirmPasswordActivity.class, bundle);
+                if (key != null && type != null) {
+                    bindKeyAccount(type, key, phone, String.valueOf(messageCode));
+                } else if (key == null && type == null) {
+                    bundle.clear();
+                    bundle.putString(ActivityExtras.EXTRAS_SET_PASSWORD_PHONE, phone);
+                    bundle.putBoolean(ActivityExtras.EXTRAS_IS_REGISTER, true);
+                    ActivityUtils.forward(this, ConfirmPasswordActivity.class, bundle);
+                }
                 break;
             case R.id.tv_verification_code:
                 if (phone.isEmpty()) {
@@ -103,8 +127,12 @@ public class FastRegistrationActivity extends BaseActivity {
                 }
 
                 myCountDownTimer.start();
+                String codeType = MethodHelper.TYPE_REGISTER;
+                if (type != null && key != null) {
+                    codeType = MethodHelper.TYPE_BIND;
+                }
 
-                verificationCode(phone, sharedPreferencesHelper.isSwitchLanguage());
+                verificationCode(phone, codeType, sharedPreferencesHelper.isSwitchLanguage());
                 break;
             case R.id.tv_user_protocol://查看用户协议
                 bundle.clear();
@@ -126,11 +154,11 @@ public class FastRegistrationActivity extends BaseActivity {
         }
     }
 
-    private void verificationCode(final String phone, boolean language) {
+    private void verificationCode(final String phone, String type, boolean language) {
         showProgressBar();
         OkHttpUtils.post().url(MethodHelper.USER_ID_CODE)
                 .addParams("phone", phone)
-                .addParams("cate", MethodHelper.TYPE_REGISTER)
+                .addParams("cate", type)
                 .addParams("language", language ? "cn" : "mn")//中文：cn，蒙古文：mn
                 .build().execute(new Callback<Result>() {
             @Override
@@ -150,7 +178,7 @@ public class FastRegistrationActivity extends BaseActivity {
                 closeProgressBar();
                 showToast(response.getMessage());
                 if (response.getStatus() == 1) {
-                    messageCode = (int)((double)response.getData());
+                    messageCode = (int) ((double) response.getData());
                 }
             }
         });
@@ -175,6 +203,47 @@ public class FastRegistrationActivity extends BaseActivity {
             public void onResponse(UserSiteInfo response, int id) {
                 if (response.getStatus() == 1) {
                     userProtocol = response.getData().getAgreement_url();
+                }
+            }
+        });
+    }
+
+    private void bindKeyAccount(final String type, final String key, String phone, String idcode) {
+        showProgressBar();
+        OkHttpUtils.post().url(MethodHelper.BIND_KEY_ACCOUNT)
+                .addParams("type", type)
+                .addParams("key", key)
+                .addParams("phone", phone)
+                .addParams("idcode", idcode)
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                closeProgressBar();
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                closeProgressBar();
+                showToast(response.getMessage());
+                if (response.getStatus() == 1) {
+                    SharedPreferencesHelper sph = new SharedPreferencesHelper(getApplicationContext());
+                    sph.setThirdInfo(type, key);
+
+                    String data = new Gson().toJson(response.getData());
+                    BaseApplication.userInfo = new Gson().fromJson(data, UserInfo.class);
+                    MessageEvent messageEvent = new MessageEvent();
+                    messageEvent.setMsgCode(MessageEvent.MessageType.REFRESH_MAIN);
+                    EventBus.getDefault().post(messageEvent);
+
+                    AppManager.getAppManager().finishActivity(SignInActivity.class);
+                    finish();
                 }
             }
         });

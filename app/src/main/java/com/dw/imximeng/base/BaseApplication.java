@@ -84,7 +84,7 @@ public class BaseApplication extends Application {
     }
 
     private void initSdk() {
-        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setWeixin("wx0179314396d8efb8", "da18d94ce099a0c8b12135f313ef0c2d");
         PlatformConfig.setQQZone("1106928955", "flJU4erkx44F1zXX");
     }
 }

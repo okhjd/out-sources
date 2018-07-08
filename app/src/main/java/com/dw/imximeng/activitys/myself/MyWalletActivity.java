@@ -9,7 +9,6 @@ import com.dw.imximeng.R;
 import com.dw.imximeng.adapters.MyWalletListAdapter;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
-import com.dw.imximeng.bean.MyPoints;
 import com.dw.imximeng.bean.MyWallets;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.helper.ActivityUtils;
@@ -41,6 +40,7 @@ public class MyWalletActivity extends BaseActivity implements AutoListView.OnRef
 
     private List<MyWallets.Wallet> list = new ArrayList<>();
     private MyWalletListAdapter adapter;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_my_wallet;
@@ -55,12 +55,18 @@ public class MyWalletActivity extends BaseActivity implements AutoListView.OnRef
         lvDetails.setAdapter(adapter);
 
         lvDetails.setOnRefreshListener(this);
-        lvDetails.firstOnRefresh();
+
     }
 
     @Override
     public void initData() {
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        lvDetails.firstOnRefresh();
     }
 
     private void getWallets(String sessionid, int cPage, boolean language) {
@@ -108,14 +114,20 @@ public class MyWalletActivity extends BaseActivity implements AutoListView.OnRef
         getWallets(BaseApplication.userInfo.getSessionid(), 1, sharedPreferencesHelper.isSwitchLanguage());
     }
 
-    @OnClick({R.id.tv_record, R.id.tv_bank_card})
-    public void onClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.tv_recharge, R.id.tv_record, R.id.tv_bank_card, R.id.tv_put_forward})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_recharge:
+                ActivityUtils.overlay(this, RechargeActivity.class);
+                break;
             case R.id.tv_record:
                 ActivityUtils.overlay(this, WalletRecordActivity.class);
                 break;
             case R.id.tv_bank_card:
                 ActivityUtils.overlay(this, MyBankCardActivity.class);
+                break;
+            case R.id.tv_put_forward:
+                ActivityUtils.overlay(this, PutForwardActivity.class);
                 break;
         }
     }

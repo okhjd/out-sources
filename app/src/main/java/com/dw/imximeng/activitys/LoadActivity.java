@@ -16,11 +16,8 @@ import com.dw.imximeng.bean.UserInfo;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.SharedPreferencesHelper;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
-
-import java.lang.reflect.Type;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -57,7 +54,11 @@ public class LoadActivity extends BaseActivity {
             @Override
             public void run() {
                 SharedPreferencesHelper sharedPreferencesHelper = new SharedPreferencesHelper(getApplicationContext());
-                userLogin(sharedPreferencesHelper.getUserPhone(), sharedPreferencesHelper.getUserPassword(), sharedPreferencesHelper.isSwitchLanguage());
+                if (sharedPreferencesHelper.getThirdKey() == null && sharedPreferencesHelper.getThirdType() == null) {
+                    userLogin(sharedPreferencesHelper.getUserPhone(), sharedPreferencesHelper.getUserPassword(), sharedPreferencesHelper.isSwitchLanguage());
+                }else {
+                    userLogin(sharedPreferencesHelper.getThirdType(), sharedPreferencesHelper.getThirdKey());
+                }
             }
         }, 300);
     }
@@ -80,7 +81,7 @@ public class LoadActivity extends BaseActivity {
                 Intent intent = new Intent();
                 if (sharedPreferencesHelper.isFirstTimeLaunch()) {
                     intent.setClass(getApplicationContext(), GuideActivity.class);
-                }else {
+                } else {
                     intent.setClass(getApplicationContext(), SignInActivity.class);
                 }
                 startActivity(intent);
@@ -102,7 +103,55 @@ public class LoadActivity extends BaseActivity {
                 } else {
                     if (sharedPreferencesHelper.isFirstTimeLaunch()) {
                         intent.setClass(getApplicationContext(), GuideActivity.class);
-                    }else {
+                    } else {
+                        intent.setClass(getApplicationContext(), MainActivity.class);
+                    }
+                }
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+
+    private void userLogin(final String type, final String key) {
+        OkHttpUtils.post().url(MethodHelper.KEY_LOGIN)
+                .addParams("type", type)
+                .addParams("key", key)
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Intent intent = new Intent();
+                if (sharedPreferencesHelper.isFirstTimeLaunch()) {
+                    intent.setClass(getApplicationContext(), GuideActivity.class);
+                } else {
+                    intent.setClass(getApplicationContext(), SignInActivity.class);
+                }
+                startActivity(intent);
+                finish();
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                Intent intent = new Intent();
+                if (response.getStatus() == 1) {
+                    SharedPreferencesHelper sph = new SharedPreferencesHelper(getApplicationContext());
+                    sph.setThirdInfo(type, key);
+
+                    String data = new Gson().toJson(response.getData());
+                    BaseApplication.userInfo = new Gson().fromJson(data, UserInfo.class);
+
+                    intent.setClass(getApplicationContext(), MainActivity.class);
+                } else {
+                    if (sharedPreferencesHelper.isFirstTimeLaunch()) {
+                        intent.setClass(getApplicationContext(), GuideActivity.class);
+                    } else {
                         intent.setClass(getApplicationContext(), MainActivity.class);
                     }
                 }

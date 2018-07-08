@@ -120,7 +120,7 @@ public class SetActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         BaseApplication.userInfo = new UserInfo();
-                        sharedPreferencesHelper.setUserPassword("");
+                        sharedPreferencesHelper.clearUser();
                         MessageEvent messageEvent = new MessageEvent();
                         messageEvent.setMsgCode(MessageEvent.MessageType.REFRESH_MAIN);
                         EventBus.getDefault().post(messageEvent);

@@ -13,11 +13,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dw.imximeng.R;
+import com.dw.imximeng.app.ActivityExtras;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
+import com.dw.imximeng.bean.ErrorInfo;
 import com.dw.imximeng.bean.MessageEvent;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.bean.UserInfo;
@@ -75,8 +76,7 @@ public class SignInActivity extends BaseActivity {
 
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            Toast.makeText(getApplicationContext(), "Authorize succeed", Toast.LENGTH_SHORT).show();
-
+            userLogin(platform.getName().toLowerCase(), data.get("uid"));
         }
 
         @Override
@@ -86,7 +86,7 @@ public class SignInActivity extends BaseActivity {
 
         @Override
         public void onCancel(SHARE_MEDIA platform, int action) {
-            Toast.makeText(getApplicationContext(), "Authorize cancel", Toast.LENGTH_SHORT).show();
+//            showToast("");
         }
     };
 
@@ -233,6 +233,52 @@ public class SignInActivity extends BaseActivity {
                     EventBus.getDefault().post(messageEvent);
 
                     finish();
+                }
+            }
+        });
+    }
+
+    private void userLogin(final String type, final String key) {
+        showProgressBar();
+        OkHttpUtils.post().url(MethodHelper.KEY_LOGIN)
+                .addParams("type", type)
+                .addParams("key", key)
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                closeProgressBar();
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                closeProgressBar();
+                if (response.getStatus() == 1) {
+                    SharedPreferencesHelper sph = new SharedPreferencesHelper(getApplicationContext());
+                    sph.setThirdInfo(type, key);
+
+                    String data = new Gson().toJson(response.getData());
+                    BaseApplication.userInfo = new Gson().fromJson(data, UserInfo.class);
+                    MessageEvent messageEvent = new MessageEvent();
+                    messageEvent.setMsgCode(MessageEvent.MessageType.REFRESH_MAIN);
+                    EventBus.getDefault().post(messageEvent);
+
+                    finish();
+                }else if (response.getStatus() == 0){
+                    String data = new Gson().toJson(response.getData());
+                    ErrorInfo error = new Gson().fromJson(data, ErrorInfo.class);
+                    if (error.getError_code().equals("00002")){
+                        Bundle bundle = new Bundle();
+                        bundle.putString(ActivityExtras.EXTRAS_THIRD_PARTY_TYPE, type);
+                        bundle.putString(ActivityExtras.EXTRAS_THIRD_PARTY_KEY, key);
+                        ActivityUtils.overlay(SignInActivity.this, FastRegistrationActivity.class, bundle);
+                    }
                 }
             }
         });

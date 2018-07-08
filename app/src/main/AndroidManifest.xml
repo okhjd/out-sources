@@ -97,6 +97,9 @@
         <activity android:name=".activitys.myself.MyReleaseActivity" />
         <activity android:name=".activitys.home.SelectAreaActivity" />
         <activity android:name=".activitys.home.SearchResultActivity" />
+        <activity android:name=".activitys.myself.RechargeActivity" />
+        <activity android:name=".activitys.myself.PaymentActivity" />
+        <activity android:name=".activitys.myself.PutForwardActivity" />
 
 
         <meta-data

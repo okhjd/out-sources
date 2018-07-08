@@ -30,6 +30,8 @@ public class SharedPreferencesHelper {
     private static final String USER_PHONE = "UserPhone";
     private static final String USER_PASSWORD = "UserPassword";
     private static final String HISTORICAL_SEARCH_DATA = "Historical_search_data";
+    private static final String THIRD_KEY = "Third_key_account";
+    private static final String THIRD_TYPE = "Third_type_account";
 
     public SharedPreferencesHelper(Context context) {
         this._context = context;
@@ -101,6 +103,27 @@ public class SharedPreferencesHelper {
 
     public void clearHistoricalSearch(){
         editor.remove(HISTORICAL_SEARCH_DATA);
+        editor.apply();
+    }
+
+    public void setThirdInfo(String type, String key) {
+        editor.putString(THIRD_KEY, key);
+        editor.putString(THIRD_TYPE, type);
+        editor.apply();
+    }
+
+    public String getThirdKey() {
+        return pref.getString(THIRD_KEY, "");
+    }
+
+    public String getThirdType() {
+        return pref.getString(THIRD_TYPE, "");
+    }
+
+    public void clearUser(){
+        editor.remove(USER_PASSWORD);
+        editor.remove(THIRD_KEY);
+        editor.remove(THIRD_TYPE);
         editor.apply();
     }
 }

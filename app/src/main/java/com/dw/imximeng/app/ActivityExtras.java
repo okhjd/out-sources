@@ -35,4 +35,7 @@ public interface ActivityExtras {
 
     String EXTRAS_CATE_ID = "extras:cate_id";
     String EXTRAS_KEY_WORD = "extras:key_word";
+
+    String EXTRAS_THIRD_PARTY_TYPE = "extras:third_party_type";
+    String EXTRAS_THIRD_PARTY_KEY = "extras:third_party_key";
 }
