@@ -86,6 +86,17 @@
         <activity android:name=".activitys.advertisements.CityInformationActivity" />
         <activity android:name=".activitys.advertisements.ReleaseInfoActivity" />
         <activity android:name=".activitys.SelectionActivity" />
+        <activity android:name=".activitys.SelectionCateActivity" />
+        <activity android:name=".activitys.advertisements.InformationDetailsActivity" />
+        <activity android:name=".activitys.advertisements.ReportActivity" />
+        <activity android:name=".activitys.advertisements.ReportResultActivity" />
+        <activity android:name=".activitys.advertisements.UserHomeActivity" />
+        <activity android:name=".activitys.advertisements.CityServiceActivity" />
+        <activity android:name=".activitys.advertisements.ServiceSearchActivity" />
+        <activity android:name=".activitys.advertisements.CityServiceSearchResultActivity" />
+        <activity android:name=".activitys.myself.MyReleaseActivity" />
+        <activity android:name=".activitys.home.SelectAreaActivity" />
+        <activity android:name=".activitys.home.SearchResultActivity" />
 
 
         <meta-data

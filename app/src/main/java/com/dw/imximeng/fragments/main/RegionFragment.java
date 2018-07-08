@@ -13,6 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dw.imximeng.R;
+import com.dw.imximeng.activitys.advertisements.CityInformationActivity;
+import com.dw.imximeng.activitys.home.SearchActivity;
 import com.dw.imximeng.activitys.signIn.SignInActivity;
 import com.dw.imximeng.adapters.RegionListAdapter;
 import com.dw.imximeng.base.BaseApplication;
@@ -22,7 +24,6 @@ import com.dw.imximeng.bean.RegionList;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MethodHelper;
-import com.dw.imximeng.helper.SharedPreferencesHelper;
 import com.dw.imximeng.helper.StringUtils;
 import com.dw.imximeng.widgets.AlertDialog;
 import com.google.gson.Gson;
@@ -35,6 +36,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
 import butterknife.OnItemLongClick;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -162,7 +165,12 @@ public class RegionFragment extends BaseFragment {
         } else {
             ActivityUtils.overlay(getActivity(), SignInActivity.class);
         }
-        return false;
+        return true;
+    }
+
+    @OnItemClick(R.id.lv_region)
+    public void onItemClick(int position) {
+        ActivityUtils.overlay(getActivity(), CityInformationActivity.class, list.get(position).getId());
     }
 
     private void showDialog(final RegionList.DataBean item) {
@@ -259,5 +267,10 @@ public class RegionFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    @OnClick(R.id.iv_search)
+    public void onClick() {
+        ActivityUtils.overlay(getActivity(), SearchActivity.class);
     }
 }

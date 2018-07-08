@@ -25,4 +25,14 @@ public interface ActivityExtras {
     String EXTRAS_EDIT_CONTENT = "extras:edit_content";
     //编辑类型
     String EXTRAS_EDIT_TYPE = "extras:edit_type";
+
+    String EXTRAS_SELECTION_DATA = "extra:selection_data";
+    String EXTRAS_SELECTION_TYPE = "extra:selection_type";
+    String EXTRAS_SELECTION_TITLE = "extra:selection_title";
+
+    String EXTRAS_INFO_DETAILS_CITY_ID = "extras:info_details_city_id";
+    String EXTRAS_INFO_DETAILS_ID = "extras:info_details_id";
+
+    String EXTRAS_CATE_ID = "extras:cate_id";
+    String EXTRAS_KEY_WORD = "extras:key_word";
 }

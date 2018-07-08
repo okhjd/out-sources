@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <include layout="@layout/common_title_bar"/>
+
+    <com.dw.imximeng.widgets.AutoListView
+        android:id="@+id/lv_my_release"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:divider="#E5E5E5"
+        android:dividerHeight="1dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="133dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/pic85"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="天哪！你都没有发布任何内容"
+            android:textSize="17sp"
+            android:textColor="#666666"
+            android:layout_marginTop="24dp"/>
+
+        <TextView
+            android:id="@+id/tv_add_release"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp"
+            android:paddingLeft="42dp"
+            android:paddingRight="42dp"
+            android:text="去发布"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/shape_sign_in_btn_enable"/>
+    </LinearLayout>
+</LinearLayout>

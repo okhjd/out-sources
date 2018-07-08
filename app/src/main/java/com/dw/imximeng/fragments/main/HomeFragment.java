@@ -92,7 +92,12 @@ public class HomeFragment extends BaseFragment implements OnBannerClickListener 
                 ActivityUtils.overlay(getActivity(), SearchActivity.class);
                 break;
             case R.id.tv_collection:
-                ActivityUtils.overlay(getActivity(), MyCollectionActivity.class);
+                if (BaseApplication.userInfo.getSessionid() != null) {
+                    ActivityUtils.overlay(getActivity(), MyCollectionActivity.class);
+                } else {
+                    ActivityUtils.overlay(getActivity(), SignInActivity.class);
+                }
+
                 break;
             case R.id.iv_release:
                 if (BaseApplication.userInfo.getSessionid() != null) {

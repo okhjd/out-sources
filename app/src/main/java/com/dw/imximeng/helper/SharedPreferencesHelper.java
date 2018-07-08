@@ -77,9 +77,11 @@ public class SharedPreferencesHelper {
         List<String> set = getHistoricalSearchData();
         List<String> s = new ArrayList<>();
         s.add(0,data);
-        for (int i=0;i<set.size();i++){
-            if (!data.equals(set.get(i))){
-                s.add(set.get(i));
+        if (set != null) {
+            for (int i = 0; i < set.size(); i++) {
+                if (!data.equals(set.get(i))) {
+                    s.add(set.get(i));
+                }
             }
         }
         if (s.size() > 10){

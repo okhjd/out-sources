@@ -1,5 +1,7 @@
 package com.dw.imximeng.bean;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,7 +60,7 @@ public class CateList {
         }
     }
 
-    public static class OptionItem{
+    public static class OptionItem implements Serializable{
         private String key; //属性选值KEY
         private String val;//属性选址VAL
 
@@ -80,22 +82,22 @@ public class CateList {
     }
 
     public static class PubInfo{
-        private String surplusNum; //当前剩余次数（免费模式且剩余次数为0时不可再发布，收费模式剩余次数为0时可付费发布，剩余次数大于0时可直接发布）
-        private String costPrice;//广告信息发布收取费用（大于0表示收费模式，等于0表示免费模式）
+        private int surplusNum; //当前剩余次数（免费模式且剩余次数为0时不可再发布，收费模式剩余次数为0时可付费发布，剩余次数大于0时可直接发布）
+        private int costPrice;//广告信息发布收取费用（大于0表示收费模式，等于0表示免费模式）
 
-        public String getSurplusNum() {
+        public int getSurplusNum() {
             return surplusNum;
         }
 
-        public void setSurplusNum(String surplusNum) {
+        public void setSurplusNum(int surplusNum) {
             this.surplusNum = surplusNum;
         }
 
-        public String getCostPrice() {
+        public int getCostPrice() {
             return costPrice;
         }
 
-        public void setCostPrice(String costPrice) {
+        public void setCostPrice(int costPrice) {
             this.costPrice = costPrice;
         }
     }
@@ -104,7 +106,8 @@ public class CateList {
         private String name;//属性名称
         private String type; //属性类型（文本：text，单选：singlesel，多选：multisel）
         private String code;//属性CODE
-        private List<OptionItem> optionList;
+        private ArrayList<OptionItem> optionList;
+        private String content;
 
         public int getId() {
             return id;
@@ -138,12 +141,20 @@ public class CateList {
             this.code = code;
         }
 
-        public List<OptionItem> getOptionList() {
+        public ArrayList<OptionItem> getOptionList() {
             return optionList;
         }
 
-        public void setOptionList(List<OptionItem> optionList) {
+        public void setOptionList(ArrayList<OptionItem> optionList) {
             this.optionList = optionList;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
         }
     }
 

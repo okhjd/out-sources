@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,6 +83,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         }
     }
 
+    public void setSearchVisible(){
+        if (getLayoutId() != 0) {
+            ImageView ivSearch = (ImageView) findViewById(R.id.iv_search);
+            ivSearch.setVisibility(View.VISIBLE);
+        }
+    }
+
     public void showToast(String msgStr) {
         Toast.makeText(this, msgStr, Toast.LENGTH_LONG).show();
     }
@@ -104,6 +112,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     public void back(View view) {
         finish();
     }
+
+    public void search(View view){}
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

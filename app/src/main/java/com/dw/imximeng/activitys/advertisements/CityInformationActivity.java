@@ -7,16 +7,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.signIn.SignInActivity;
 import com.dw.imximeng.adapters.GvCateListAdapter;
 import com.dw.imximeng.adapters.InformationAdapter;
 import com.dw.imximeng.adapters.VpCateListAdapter;
+import com.dw.imximeng.app.ActivityExtras;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.CateList;
 import com.dw.imximeng.bean.Information;
+import com.dw.imximeng.bean.RegionList;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MaDensityUtils;
@@ -35,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -55,6 +59,10 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     ImageView ivAdd;
     @BindView(R.id.iv_sign_in)
     ImageView ivSignIn;
+    @BindView(R.id.ll_empty)
+    LinearLayout llEmpty;
+    @BindView(R.id.ll_load_error)
+    LinearLayout llLoadError;
     private VpCateListAdapter mAdapter;
     private List<CateList.CateItem> list = new ArrayList<>();
     private List<GridView> gridList = new ArrayList<>();
@@ -63,6 +71,7 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     private InformationAdapter adapter;
     private List<Information.ListBean> listBeans = new ArrayList<>();
     private int page;
+    private String cateId = "";
 
     private long mClickTime = 0;
 
@@ -79,7 +88,6 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
 
     @Override
     public void initView() {
-        setTitle(city);
         mAdapter = new VpCateListAdapter();
         viewpager.setAdapter(mAdapter);
 
@@ -104,6 +112,7 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     @Override
     public void initData() {
         getCateList(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
+        getArea(BaseApplication.userInfo.getSessionid(), city, sharedPreferencesHelper.isSwitchLanguage());
     }
 
     private void getCateList(String sessionid, boolean language) {
@@ -135,6 +144,9 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
                     }
                     list.clear();
                     list.addAll(cateList.getCateList());
+                    if (!list.isEmpty()) {
+                        list.get(0).setCheck(true);
+                    }
 
                     //计算viewpager一共显示几页
                     int pageSize = list.size() % 8 == 0
@@ -157,11 +169,25 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setCheck(false);
+        }
+        list.get(position).setCheck(true);
         CateList.CateItem item = (CateList.CateItem) parent.getAdapter().getItem(position);
-        showToast(item.getName());
+        cateId = item.getId() + "";
+        lvInfo.firstOnRefresh();
+        ((GvCateListAdapter) parent.getAdapter()).notifyDataSetChanged();
     }
 
-    private void getInfoList(String area, String sessionid, String cid, String keywords,
+    @OnItemClick(R.id.lv_info)
+    public void onListViewItemClick(int position){
+        Bundle bundle = new Bundle();
+        bundle.putString(ActivityExtras.EXTRAS_INFO_DETAILS_CITY_ID, city);
+        bundle.putString(ActivityExtras.EXTRAS_INFO_DETAILS_ID, listBeans.get(position-1).getId());
+        ActivityUtils.overlay(this, InformationDetailsActivity.class, bundle);
+    }
+
+    private void getInfoList(final String area, String sessionid, String cid, String keywords,
                              String orderby, String cpage, boolean language) {
         OkHttpUtils.post().url(MethodHelper.INFORMATION_LIST)
                 .addParams("language", language ? "cn" : "mn")//中文：cn，蒙古文：mn
@@ -182,6 +208,8 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
             public void onError(Call call, Exception e, int id) {
                 Log.e(this.getClass().getName(), "onError" + e.getMessage());
                 lvInfo.onRefreshFailue();
+                lvInfo.setVisibility(View.GONE);
+                llLoadError.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -197,7 +225,18 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
                     }
                     lvInfo.setResultPage(1, information.getList().size());
                     listBeans.addAll(information.getList());
-                    adapter.setComment(information.getCateList().get(0).getIscomment().equals("1"));
+                    if (listBeans.isEmpty()) {
+                        lvInfo.setVisibility(View.GONE);
+                        llEmpty.setVisibility(View.VISIBLE);
+                    } else {
+                        lvInfo.setVisibility(View.VISIBLE);
+                        llEmpty.setVisibility(View.GONE);
+                    }
+                    if (information.getCateList().isEmpty()){
+                        adapter.notifyDataSetChanged();
+                    }else {
+                        adapter.setComment(information.getCateList().get(0).getIscomment().equals("1"));
+                    }
                 }
             }
         });
@@ -207,7 +246,7 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     public void onRefresh() {
         page = 1;
         getInfoList(BaseApplication.userInfo.getArea(),
-                BaseApplication.userInfo.getSessionid(), "", "", "",
+                BaseApplication.userInfo.getSessionid(), cateId, "", "",
                 String.valueOf(page), sharedPreferencesHelper.isSwitchLanguage());
     }
 
@@ -215,15 +254,15 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     public void onLoad() {
         page++;
         getInfoList(BaseApplication.userInfo.getArea(),
-                BaseApplication.userInfo.getSessionid(), "", "", "",
+                BaseApplication.userInfo.getSessionid(), cateId, "", "",
                 String.valueOf(page), sharedPreferencesHelper.isSwitchLanguage());
     }
 
-    @OnClick({R.id.tv_title, R.id.iv_add, R.id.iv_sign_in})
+    @OnClick({R.id.tv_title, R.id.iv_add, R.id.iv_sign_in, R.id.ll_load_error, R.id.iv_push})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_add:
-                ActivityUtils.overlay(this, ReleaseInfoActivity.class, city);
+                ActivityUtils.overlay(this, ReleaseInfoActivity.class, BaseApplication.userInfo.getArea());
                 break;
             case R.id.iv_sign_in:
                 if (BaseApplication.userInfo.getSessionid() != null) {
@@ -241,6 +280,14 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
                     mClickTime = System.currentTimeMillis();
                     //表示单击，此处也可以做单击的操作
                 }
+                break;
+            case R.id.ll_load_error:
+                lvInfo.firstOnRefresh();
+                llLoadError.setVisibility(View.GONE);
+                lvInfo.setVisibility(View.VISIBLE);
+                break;
+            case R.id.iv_push:
+                ActivityUtils.overlay(this, ReleaseInfoActivity.class, BaseApplication.userInfo.getArea());
                 break;
         }
     }
@@ -285,5 +332,33 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
                         ivSignIn.setVisibility(View.GONE);
                     }
                 }).show();
+    }
+
+    private void getArea(String sessionid, String area, boolean language) {
+        OkHttpUtils.post().url(MethodHelper.USER_AREA_INFO)
+                .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
+                .addParams("area", StringUtils.stringsIsEmpty(area))//地区ID
+                .addParams("language", language ? "cn" : "mn")//中文：cn，蒙古文：mn
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                if (response.getStatus() == 1) {
+                    String data = new Gson().toJson(response.getData());
+                    RegionList.DataBean dataBean = new Gson().fromJson(data, RegionList.DataBean.class);
+                    setTitle(dataBean.getName());
+                }
+            }
+        });
     }
 }

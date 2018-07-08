@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/tv_reenting_title">
+        android:layout_toRightOf="@+id/tv_cate_title">
 
         <TextView
             android:id="@+id/tv_cate"

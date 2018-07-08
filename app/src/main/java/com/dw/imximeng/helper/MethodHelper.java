@@ -80,4 +80,28 @@ public interface MethodHelper {
     String INFORMATION_CATE_LIST = BuildConfig.API_ENV + "/member/app/information/cateList";
     //用户签到
     String USER_SIGN_IN = BuildConfig.API_ENV + "/member/app/user/signIn";
+    //发布广告信息
+    String PUSH_ADVERTISMENT_INFO = BuildConfig.API_ENV + "/member/app/information/publishInfo";
+    //信息详情
+    String INFO_DETETAILS = BuildConfig.API_ENV + "/member/app/information/informationInfo";
+    //广告信息评论列表
+    String COMMENT_LIST = BuildConfig.API_ENV + "/member/app/information/commentList";
+    //评论广告信息
+    String PUSH_COMMENT_INFO = BuildConfig.API_ENV + "/member/app/information/toComment";
+    //操作收藏广告信息
+    String COLLECT_INFO = BuildConfig.API_ENV + "/member/app/user/opcollect";
+    //举报广告信息
+    String TO_REPORT = BuildConfig.API_ENV + "/member/app/information/toReport";
+    //用户主页
+    String USER_HOME = BuildConfig.API_ENV + "/member/app/information/userHomepage";
+    //同城服务
+    String SERVICE_LIST = BuildConfig.API_ENV + "/member/app/information/serviceList";
+    //同城服务标题检索
+    String SERVICE_TITLE = BuildConfig.API_ENV + "/member/app/information/serviceTitle";
+    //标题检索
+    String SEARCH_TITLE = BuildConfig.API_ENV + "/member/app/information/titleRetrieval";
+    //我的发布
+    String MY_RELEASE = BuildConfig.API_ENV + "/member/app/user/informationList";
+    //删除我发布的广告信息
+    String DELETE_RELEASE = BuildConfig.API_ENV + "/member/app/user/informationDelete";
 }

@@ -5,15 +5,17 @@ import android.widget.ListView;
 
 import com.dw.imximeng.R;
 import com.dw.imximeng.adapters.SelectionAdapter;
+import com.dw.imximeng.app.ActivityExtras;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.bean.Selection;
 import com.dw.imximeng.helper.ActivityUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnItemClick;
 
 /**
  * @author hjd
@@ -26,14 +28,16 @@ public class SelectionActivity extends BaseActivity {
     private SelectionAdapter adapter;
     private List<Selection> list = new ArrayList<>();
     private boolean single = true;
+    private String title = "";
 
     @Override
     protected void init(Bundle savedInstanceState) {
         super.init(savedInstanceState);
         Bundle bundle = ActivityUtils.getParcelableExtra(this);
-        if (bundle != null){
-            list.addAll((ArrayList<Selection>) bundle.getSerializable("data"));
-            single = bundle.getBoolean("single");
+        if (bundle != null) {
+            list.addAll((ArrayList<Selection>) bundle.getSerializable(ActivityExtras.EXTRAS_SELECTION_DATA));
+            single = bundle.getBoolean(ActivityExtras.EXTRAS_SELECTION_TYPE);
+            title = bundle.getString(ActivityExtras.EXTRAS_SELECTION_TITLE);
         }
     }
 
@@ -44,7 +48,8 @@ public class SelectionActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        if (!single){
+        setTitle(title);
+        if (!single) {
             setSubmit("保存");
         }
         adapter = new SelectionAdapter(this, list, R.layout.item_selection);
@@ -56,5 +61,32 @@ public class SelectionActivity extends BaseActivity {
 
     }
 
+    @OnItemClick(R.id.lv_selection)
+    public void onItemClick(int position) {
+        list.get(position).setCheck(!list.get(position).isCheck());
+        if (single) {
+            //单选@
+            ActivityUtils.setResult(this, RESULT_OK, list.get(position));
+        } else {
+            adapter.notifyDataSetChanged();
+        }
+    }
 
+    @OnClick(R.id.tv_submit)
+    public void onClick() {
+        String result = "";
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).isCheck()) {
+                if (i == list.size() - 1) {
+                    result = list.get(i).getName();
+                } else {
+                    result = list.get(i).getName() + ",";
+                }
+            }
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString(ActivityExtras.EXTRAS_SELECTION_TITLE, title);
+        bundle.putString(ActivityExtras.EXTRAS_SELECTION_DATA, result);
+        ActivityUtils.setResult(this, RESULT_OK, bundle);
+    }
 }

@@ -11,4 +11,7 @@ public interface ActivityForResultCode {
     int BNAK_CODE = 3;
     int MY_SCAN_REQUEST_CODE = 4;
     int SET_PAY_PASSWORD = 5;
+
+    int RESULT_CODE_SELECTION = 6;
+    int RESULT_CODE_SELECTION_ITEM = 7;
 }

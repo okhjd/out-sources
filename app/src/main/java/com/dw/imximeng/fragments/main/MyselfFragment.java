@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.myself.MessageActivity;
 import com.dw.imximeng.activitys.myself.MyPointsActivity;
+import com.dw.imximeng.activitys.myself.MyReleaseActivity;
 import com.dw.imximeng.activitys.myself.MyWalletActivity;
 import com.dw.imximeng.activitys.myself.SetActivity;
 import com.dw.imximeng.activitys.myself.UserInfoActivity;
@@ -140,7 +141,7 @@ public class MyselfFragment extends BaseFragment {
                 break;
             case R.id.tv_my_release://我的发布
                 if (BaseApplication.userInfo.getSessionid() != null) {
-
+                    ActivityUtils.overlay(getActivity(), MyReleaseActivity.class);
                 } else {
                     ActivityUtils.overlay(getActivity(), SignInActivity.class);
                 }

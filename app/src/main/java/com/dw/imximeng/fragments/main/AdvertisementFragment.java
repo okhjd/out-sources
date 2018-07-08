@@ -6,7 +6,11 @@ import android.widget.TextView;
 
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.advertisements.CityInformationActivity;
+import com.dw.imximeng.activitys.advertisements.CityServiceActivity;
 import com.dw.imximeng.activitys.advertisements.SmallToolsActivity;
+import com.dw.imximeng.activitys.advertisements.UserHomeActivity;
+import com.dw.imximeng.activitys.home.SearchActivity;
+import com.dw.imximeng.activitys.signIn.SignInActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.base.BaseFragment;
 import com.dw.imximeng.bean.MessageEvent;
@@ -66,19 +70,28 @@ public class AdvertisementFragment extends BaseFragment {
                 sharedPreferencesHelper.isSwitchLanguage());
     }
 
-    @OnClick({R.id.tv_city_service, R.id.tv_small_tools, R.id.tv_current_area_1})
+    @OnClick({R.id.tv_city_service, R.id.tv_small_tools, R.id.tv_current_area_1, R.id.iv_search})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_city_service:
-                ActivityUtils.overlay(getActivity(), CityInformationActivity.class, tvCurrentArea1.getText().toString());
+                if (BaseApplication.userInfo.getSessionid() != null) {
+                    ActivityUtils.overlay(getActivity(), CityServiceActivity.class, tvCurrentArea1.getTag().toString());
+                }else {
+                    ActivityUtils.overlay(getActivity(), SignInActivity.class);
+                }
                 break;
             case R.id.tv_small_tools:
                 ActivityUtils.overlay(getActivity(), SmallToolsActivity.class);
                 break;
             case R.id.tv_current_area_1:
-                MessageEvent messageEvent = new MessageEvent();
-                messageEvent.setMsgCode(MessageEvent.MessageType.SWITCH_PAGE);
-                EventBus.getDefault().post(messageEvent);
+                if (BaseApplication.userInfo.getArea() == null) {
+                    MessageEvent messageEvent = new MessageEvent();
+                    messageEvent.setMsgCode(MessageEvent.MessageType.SWITCH_PAGE);
+                    EventBus.getDefault().post(messageEvent);
+                }
+                break;
+            case R.id.iv_search:
+                ActivityUtils.overlay(getActivity(), SearchActivity.class);
                 break;
         }
     }
@@ -109,6 +122,7 @@ public class AdvertisementFragment extends BaseFragment {
                     String data = new Gson().toJson(response.getData());
                     RegionList.DataBean dataBean = new Gson().fromJson(data, RegionList.DataBean.class);
                     tvCurrentArea1.setText(dataBean.getName());
+                    tvCurrentArea1.setTag(dataBean.getId());
                 }
             }
         });

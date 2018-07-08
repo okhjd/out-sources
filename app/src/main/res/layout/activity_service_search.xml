@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_margin"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="15dp">
+        <EditText
+            android:id="@+id/et_search"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:hint="请输入关键字"
+            android:drawableLeft="@mipmap/pic2"
+            android:drawablePadding="15dp"
+            android:singleLine="true"
+            android:background="@drawable/shape_search_margin"
+            android:textSize="15sp"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color_hint"
+            android:imeOptions="actionSearch"
+            android:layout_toLeftOf="@+id/tv_cancel"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"/>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="13dp"
+            android:textSize="15sp"
+            android:textColor="#808080"
+            android:layout_centerVertical="true"
+            android:onClick="back"/>
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lv_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#e7e7e7"
+        android:dividerHeight="1dp"
+        android:paddingLeft="12dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#ebebeb"/>
+
+</LinearLayout>

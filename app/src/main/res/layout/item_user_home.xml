@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="27sp"
+        android:text="25"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="5月"
+        android:layout_marginLeft="3dp"
+        android:textSize="13sp"
+        android:textColor="#333333"
+        android:layout_marginRight="24dp"/>
+    
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:scaleType="centerInside"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textSize="15sp"
+            android:textColor="#333333"
+            android:layout_above="@+id/ll_bottom"/>
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right|center_vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/pic12"
+                android:text="12"
+                android:drawablePadding="6dp"
+                android:layout_marginRight="20dp"
+                android:textSize="11sp"
+                android:textColor="#999999"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/pic13"
+                android:text="12"
+                android:drawablePadding="6dp"
+                android:textSize="11sp"
+                android:textColor="#999999"/>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

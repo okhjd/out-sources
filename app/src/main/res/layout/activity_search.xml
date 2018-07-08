@@ -25,6 +25,7 @@
             android:textColor="@color/text_color"
             android:textColorHint="@color/text_color_hint"
             android:layout_toLeftOf="@+id/tv_cancel"
+            android:imeOptions="actionSearch"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"/>
 
@@ -41,37 +42,16 @@
             android:onClick="back"/>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_hot_title"
+    <LinearLayout
+        android:id="@+id/ll_hot"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="热门搜索 Top10"
-        android:textSize="12sp"
-        android:textColor="#808080"
-        android:paddingLeft="16dp"
-        android:paddingTop="11dp"
-        android:paddingBottom="11dp"
-        android:paddingRight="16dp"/>
-
-    <com.dw.imximeng.widgets.FlowGroupView
-        android:id="@+id/fgv_hot_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="9dp"
-        android:layout_marginRight="9dp"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <TextView
-            android:id="@+id/tv_historical_title"
+            android:id="@+id/tv_hot_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="历史搜索 Top10"
-            android:layout_toLeftOf="@+id/iv_historical_delete"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:text="热门搜索 Top10"
             android:textSize="12sp"
             android:textColor="#808080"
             android:paddingLeft="16dp"
@@ -79,20 +59,57 @@
             android:paddingBottom="11dp"
             android:paddingRight="16dp"/>
 
-        <ImageView
-            android:id="@+id/iv_historical_delete"
-            android:layout_width="wrap_content"
+        <com.dw.imximeng.widgets.FlowGroupView
+            android:id="@+id/fgv_hot_search"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/pic10"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"/>
-    </RelativeLayout>
+            android:layout_marginLeft="9dp"
+            android:layout_marginRight="9dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp">
+            <TextView
+                android:id="@+id/tv_historical_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="历史搜索 Top10"
+                android:layout_toLeftOf="@+id/iv_historical_delete"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:textSize="12sp"
+                android:textColor="#808080"
+                android:paddingLeft="16dp"
+                android:paddingTop="11dp"
+                android:paddingBottom="11dp"
+                android:paddingRight="16dp"/>
+
+            <ImageView
+                android:id="@+id/iv_historical_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/pic10"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"/>
+        </RelativeLayout>
 
 
-    <com.dw.imximeng.widgets.FlowGroupView
-        android:id="@+id/fgv_historical_search"
+        <com.dw.imximeng.widgets.FlowGroupView
+            android:id="@+id/fgv_historical_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="9dp"
+            android:layout_marginRight="9dp"/>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv_search_result"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:dividerHeight="1dp"
+        android:divider="#ebebeb"
+        android:visibility="gone"/>
 </LinearLayout>
