@@ -7,4 +7,5 @@ import com.umeng.socialize.weixin.view.WXCallbackActivity;
  * @create-time 2018-06-28 10:30:11
  */
 public class WXEntryActivity extends WXCallbackActivity {
+
 }

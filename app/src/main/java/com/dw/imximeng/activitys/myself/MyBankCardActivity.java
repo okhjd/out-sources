@@ -1,11 +1,13 @@
 package com.dw.imximeng.activitys.myself;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
 import com.dw.imximeng.R;
 import com.dw.imximeng.adapters.BankCardListAdapter;
+import com.dw.imximeng.app.ActivityExtras;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.BankCard;
@@ -24,6 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -37,6 +40,13 @@ public class MyBankCardActivity extends BaseActivity {
 
     private List<BankCard> list = new ArrayList<>();
     private BankCardListAdapter adapter;
+
+    private String type;
+    @Override
+    protected void init(Bundle savedInstanceState) {
+        super.init(savedInstanceState);
+        type = ActivityUtils.getStringExtra(this);
+    }
 
     @Override
     public int getLayoutId() {
@@ -108,5 +118,12 @@ public class MyBankCardActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @OnItemClick(R.id.lv_bank_card)
+    public void onItemClick(int position){
+        if (ActivityExtras.EXTRAS_MY_BANK_CARD_TYPE.equals(type)) {
+            ActivityUtils.setResult(this, RESULT_OK, list.get(position));
+        }
     }
 }

@@ -39,7 +39,7 @@
             android:textColor="#333333"
             android:textStyle="bold"
             android:includeFontPadding="false"
-            android:text="500"/>
+            android:text="0.01"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

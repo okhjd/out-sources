@@ -108,4 +108,10 @@ public interface MethodHelper {
     String KEY_LOGIN = BuildConfig.API_ENV + "/member/app/user/keyLogin";
     //三方账号绑定
     String BIND_KEY_ACCOUNT = BuildConfig.API_ENV + "/member/app/user/keyAccountBind";
+    //充值提交
+    String RECHARGE_SUBMIT = BuildConfig.API_ENV + "/member/app/user/rechargeSubmit";
+    //提现申请
+    String PUT_FORWARD = BuildConfig.API_ENV + "/member/app/user/putforwardApply";
+    //举报类型
+    String REPORT_TYPE = BuildConfig.API_ENV + "/member/app/information/reportType";
 }

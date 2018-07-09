@@ -1,10 +1,10 @@
 [
     {
-        "merged": "E:\\out-sources\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable\\indicator_bg_top.xml",
-        "source": "E:\\out-sources\\out-sources\\PullToRefresh\\src\\main\\res\\drawable\\indicator_bg_top.xml"
+        "merged": "F:\\GitHub\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable\\indicator_bg_bottom.xml",
+        "source": "F:\\GitHub\\out-sources\\PullToRefresh\\src\\main\\res\\drawable\\indicator_bg_bottom.xml"
     },
     {
-        "merged": "E:\\out-sources\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable\\indicator_bg_bottom.xml",
-        "source": "E:\\out-sources\\out-sources\\PullToRefresh\\src\\main\\res\\drawable\\indicator_bg_bottom.xml"
+        "merged": "F:\\GitHub\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable\\indicator_bg_top.xml",
+        "source": "F:\\GitHub\\out-sources\\PullToRefresh\\src\\main\\res\\drawable\\indicator_bg_top.xml"
     }
 ]

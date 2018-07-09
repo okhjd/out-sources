@@ -1,10 +1,13 @@
 package com.dw.imximeng.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * @author hjd
  * @Created_Time 2018\7\3 0003
  */
-public class BankCard {
+public class BankCard implements Parcelable{
     private int id;
     private String code;
     private String bankName;
@@ -14,6 +17,30 @@ public class BankCard {
     private String lastNumber;
     private String showCnumber;
     private String icon;
+
+    protected BankCard(Parcel in) {
+        id = in.readInt();
+        code = in.readString();
+        bankName = in.readString();
+        username = in.readString();
+        telephone = in.readString();
+        cnumber = in.readString();
+        lastNumber = in.readString();
+        showCnumber = in.readString();
+        icon = in.readString();
+    }
+
+    public static final Creator<BankCard> CREATOR = new Creator<BankCard>() {
+        @Override
+        public BankCard createFromParcel(Parcel in) {
+            return new BankCard(in);
+        }
+
+        @Override
+        public BankCard[] newArray(int size) {
+            return new BankCard[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -85,5 +112,23 @@ public class BankCard {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(code);
+        dest.writeString(bankName);
+        dest.writeString(username);
+        dest.writeString(telephone);
+        dest.writeString(cnumber);
+        dest.writeString(lastNumber);
+        dest.writeString(showCnumber);
+        dest.writeString(icon);
     }
 }

@@ -180,6 +180,7 @@
 -dontwarn com.baidu.**
 -keep class vi.com.** {*;}
 -keep class com.baidu.** { *; }
+
 -dontwarn vi.com.gdi.bgl.android.**
 -keep class vi.com.gdi.bgl.android.**{*;}
 
@@ -256,3 +257,8 @@
  -keep public class * extends java.lang.annotation.Annotation {
    *;
  }
+
+
+-keep class com.tencent.mm.opensdk.** {*;}
+-keep class com.tencent.wxop.** {*;}
+-keep class com.tencent.mm.sdk.** {*;}

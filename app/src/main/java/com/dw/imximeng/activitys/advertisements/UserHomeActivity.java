@@ -17,6 +17,7 @@ import com.dw.imximeng.bean.UserHome;
 import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.StringUtils;
+import com.dw.imximeng.widgets.ListViewNoScroll;
 import com.dw.imximeng.widgets.SwipeRefreshView;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.ILoadingLayout;
@@ -49,7 +50,7 @@ public class UserHomeActivity extends BaseActivity{
     @BindView(R.id.tv_autograph)
     TextView tvAutograph;
     @BindView(R.id.lv_info)
-    ListView lvInfo;
+    ListViewNoScroll lvInfo;
     @BindView(R.id.refresh_scroll_view)
     PullToRefreshScrollView refreshScrollView;
     private String uid = "";

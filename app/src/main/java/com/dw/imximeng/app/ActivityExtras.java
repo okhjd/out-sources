@@ -38,4 +38,7 @@ public interface ActivityExtras {
 
     String EXTRAS_THIRD_PARTY_TYPE = "extras:third_party_type";
     String EXTRAS_THIRD_PARTY_KEY = "extras:third_party_key";
+
+
+    String EXTRAS_MY_BANK_CARD_TYPE = "extras:my_bank_card_type";
 }

@@ -102,7 +102,7 @@
 
         <com.dw.imximeng.widgets.GridViewNoScroll
             android:id="@+id/gv_image"
-            android:layout_width="match_parent"
+            android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="14dp"

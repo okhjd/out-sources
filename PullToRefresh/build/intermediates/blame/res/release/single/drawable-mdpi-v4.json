@@ -1,14 +1,14 @@
 [
     {
-        "merged": "E:\\out-sources\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\default_ptr_rotate.png",
-        "source": "E:\\out-sources\\out-sources\\PullToRefresh\\src\\main\\res\\drawable-mdpi\\default_ptr_rotate.png"
+        "merged": "F:\\GitHub\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\default_ptr_flip.png",
+        "source": "F:\\GitHub\\out-sources\\PullToRefresh\\src\\main\\res\\drawable-mdpi\\default_ptr_flip.png"
     },
     {
-        "merged": "E:\\out-sources\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\default_ptr_flip.png",
-        "source": "E:\\out-sources\\out-sources\\PullToRefresh\\src\\main\\res\\drawable-mdpi\\default_ptr_flip.png"
+        "merged": "F:\\GitHub\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\indicator_arrow.png",
+        "source": "F:\\GitHub\\out-sources\\PullToRefresh\\src\\main\\res\\drawable-mdpi\\indicator_arrow.png"
     },
     {
-        "merged": "E:\\out-sources\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\indicator_arrow.png",
-        "source": "E:\\out-sources\\out-sources\\PullToRefresh\\src\\main\\res\\drawable-mdpi\\indicator_arrow.png"
+        "merged": "F:\\GitHub\\out-sources\\PullToRefresh\\build\\intermediates\\res\\merged\\release\\drawable-mdpi-v4\\default_ptr_rotate.png",
+        "source": "F:\\GitHub\\out-sources\\PullToRefresh\\src\\main\\res\\drawable-mdpi\\default_ptr_rotate.png"
     }
 ]

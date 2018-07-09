@@ -1,6 +1,8 @@
 package com.dw.imximeng.fragments.main;
 
 import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -12,6 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baidu.location.BDAbstractLocationListener;
+import com.baidu.location.BDLocation;
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.advertisements.CityInformationActivity;
 import com.dw.imximeng.activitys.home.SearchActivity;
@@ -23,6 +27,7 @@ import com.dw.imximeng.bean.MessageEvent;
 import com.dw.imximeng.bean.RegionList;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.helper.ActivityUtils;
+import com.dw.imximeng.helper.LocationService;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.StringUtils;
 import com.dw.imximeng.widgets.AlertDialog;
@@ -55,6 +60,8 @@ public class RegionFragment extends BaseFragment {
     TextView tvCurrentArea2;
     @BindView(R.id.lv_region)
     ListView lvRegion;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
 
     private RegionListAdapter adapter;
     private List<RegionList.DataBean> list = new ArrayList<>();
@@ -64,6 +71,8 @@ public class RegionFragment extends BaseFragment {
 
     private ScaleAnimation sato1 = new ScaleAnimation(1, 1, 0, 1,
             Animation.RELATIVE_TO_PARENT, 0.5f, Animation.RELATIVE_TO_PARENT, 0.5f);
+
+    private LocationService locationService;
 
     @Override
     public int getLayoutId() {
@@ -115,11 +124,20 @@ public class RegionFragment extends BaseFragment {
         tvCurrentArea2.setVisibility(View.VISIBLE);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void initData() {
         adapter = new RegionListAdapter(getActivity(), list, R.layout.item_region_list);
         lvRegion.setAdapter(adapter);
         getRegionList(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
+
+        // -----------location config ------------
+        locationService = new LocationService(getApplication());
+        //获取locationservice实例，建议应用中只初始化1个location实例，然后使用，可以参考其他示例的activity，都是通过此种方式获取locationservice实例的
+        locationService.registerListener(mListener);
+        //注册监听
+        locationService.setLocationOption(locationService.getDefaultLocationClientOption());
+        locationService.start();
     }
 
     @Override
@@ -272,5 +290,28 @@ public class RegionFragment extends BaseFragment {
     @OnClick(R.id.iv_search)
     public void onClick() {
         ActivityUtils.overlay(getActivity(), SearchActivity.class);
+    }
+
+    private BDAbstractLocationListener mListener = new BDAbstractLocationListener() {
+
+        @Override
+        public void onReceiveLocation(BDLocation location) {
+            // TODO Auto-generated method stub
+            if (null != location && location.getLocType() != BDLocation.TypeServerError) {
+                locationService.stop();
+                tvAddress.setText(location.getAddrStr());
+            }
+        }
+    };
+
+    /***
+     * Stop location service
+     */
+    @Override
+    public void onStop() {
+        // TODO Auto-generated method stub
+        locationService.unregisterListener(mListener); //注销掉监听
+        locationService.stop(); //停止定位服务
+        super.onStop();
     }
 }

@@ -17,6 +17,7 @@ import com.umeng.socialize.PlatformConfig;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.MemoryCookieStore;
+import com.zhy.http.okhttp.https.HttpsUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -55,12 +56,15 @@ public class BaseApplication extends Application {
 
     private void initOkhttp() {
         CookieJarImpl cookieJar1 = new CookieJarImpl(new MemoryCookieStore());
+        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);//设置可访问所有的https网站
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(OkHttpUtils.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .readTimeout(OkHttpUtils.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
                 .writeTimeout(OkHttpUtils.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS)
 //                .addInterceptor(new LoggerInterceptor("TAG"))
                 .cookieJar(cookieJar1)
+                //配置Https
+                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
                 .build();
 
         OkHttpUtils.initClient(okHttpClient);

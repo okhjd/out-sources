@@ -7,10 +7,17 @@ import android.widget.ListView;
 
 public class ListViewNoScroll extends ListView{
 
-    public ListViewNoScroll(Context context, AttributeSet attrs) {
-            super(context, attrs) ;
+    public ListViewNoScroll(Context context) {
+        super(context);
     }
-    
+
+    public ListViewNoScroll(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public ListViewNoScroll(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
     /**
      * 设置不滚动
      */
