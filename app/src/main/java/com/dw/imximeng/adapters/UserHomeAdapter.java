@@ -1,12 +1,18 @@
 package com.dw.imximeng.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.dw.imximeng.R;
 import com.dw.imximeng.app.ViewHolder;
-import com.dw.imximeng.bean.Bank;
 import com.dw.imximeng.bean.UserHome;
+import com.dw.imximeng.helper.MaDensityUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.List;
@@ -22,6 +28,72 @@ public class UserHomeAdapter extends CommonAdapter<UserHome.ListBean> {
 
     @Override
     public void convert(ViewHolder helper, UserHome.ListBean item) {
+        helper.setText(R.id.tv_day, item.getShowDay());
+        helper.setText(R.id.tv_month, item.getShowMonth());
+        ImageView imageview = helper.getView(R.id.imageview);
+        ImageView ivTwo1 = helper.getView(R.id.iv_two_1);
+        ImageView ivTwo2 = helper.getView(R.id.iv_two_2);
+        ImageView ivThree1 = helper.getView(R.id.iv_three_1);
+        ImageView ivThree2 = helper.getView(R.id.iv_three_2);
+        ImageView ivThree3 = helper.getView(R.id.iv_three_3);
 
+        LinearLayout llTwoImage = helper.getView(R.id.ll_image);
+        LinearLayout llThreeImage = helper.getView(R.id.ll_image_all);
+
+        TextView tvContent = helper.getView(R.id.tv_content);
+        tvContent.setText(item.getContent());
+
+        TextView tvImgNum = helper.getView(R.id.tv_img_num);
+
+        if (item.getImgList().isEmpty()) {
+            imageview.setVisibility(View.GONE);
+            llTwoImage.setVisibility(View.GONE);
+            llThreeImage.setVisibility(View.GONE);
+            tvImgNum.setVisibility(View.GONE);
+
+            tvContent.setBackgroundColor(Color.parseColor("#f3f3f5"));
+            tvContent.setPadding(MaDensityUtils.dp2px(mContext, 8), 0,
+                    MaDensityUtils.dp2px(mContext, 8), 0);
+            tvContent.setGravity(Gravity.CENTER_VERTICAL);
+            tvContent.setLines(1);
+            tvContent.setEllipsize(TextUtils.TruncateAt.END);
+        } else {
+            imageview.setVisibility(View.VISIBLE);
+            tvContent.setBackgroundColor(Color.WHITE);
+            tvContent.setLines(Integer.MAX_VALUE);
+            tvContent.setGravity(Gravity.TOP);
+            tvContent.setPadding(0, 0, 0, 0);
+
+            if (item.getImgList().size() == 1) {
+                imageview.setVisibility(View.VISIBLE);
+                llTwoImage.setVisibility(View.GONE);
+                llThreeImage.setVisibility(View.GONE);
+                tvImgNum.setVisibility(View.GONE);
+                ImageLoader.getInstance().displayImage(item.getImgList().get(0).getShowImg(), imageview);
+
+            } else if (item.getImgList().size() == 2) {
+                imageview.setVisibility(View.GONE);
+                llTwoImage.setVisibility(View.VISIBLE);
+                llThreeImage.setVisibility(View.GONE);
+                tvImgNum.setVisibility(View.VISIBLE);
+                tvImgNum.setText("共" + item.getImgList().size() + "张");
+
+                ImageLoader.getInstance().displayImage(item.getImgList().get(0).getShowImg(), ivTwo1);
+                ImageLoader.getInstance().displayImage(item.getImgList().get(1).getShowImg(), ivTwo2);
+            } else if (item.getImgList().size() == 3) {
+                imageview.setVisibility(View.GONE);
+                llTwoImage.setVisibility(View.GONE);
+                llThreeImage.setVisibility(View.VISIBLE);
+                tvImgNum.setVisibility(View.VISIBLE);
+                tvImgNum.setText("共" + item.getImgList().size() + "张");
+
+                ImageLoader.getInstance().displayImage(item.getImgList().get(0).getShowImg(), ivThree1);
+                ImageLoader.getInstance().displayImage(item.getImgList().get(1).getShowImg(), ivThree2);
+                ImageLoader.getInstance().displayImage(item.getImgList().get(2).getShowImg(), ivThree3);
+            }
+        }
+
+        helper.setText(R.id.tv_collection, item.getCollectnum());
+        helper.setText(R.id.tv_comment, String.valueOf((int)item.getCommentnum()));
     }
 }

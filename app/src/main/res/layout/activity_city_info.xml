@@ -68,31 +68,38 @@
         android:paddingLeft="12dp"
         android:paddingRight="29dp">
 
-        <TextView
-            android:id="@+id/tv_type"
+        <RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:drawablePadding="7dp"
-            android:drawableRight="@mipmap/pic33"
-            android:singleLine="true"
-            android:text="最新发布"
-            android:textColor="#484848"
-            android:textSize="13sp" />
+            android:orientation="horizontal"
+            android:layout_centerVertical="true">
+            <RadioButton
+                android:id="@+id/tv_new_release"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="7dp"
+                android:drawableRight="@mipmap/pic33"
+                android:singleLine="true"
+                android:text="最新发布"
+                android:button="@null"
+                android:checked="true"
+                android:textColor="@drawable/selector_city_info_typeface"
+                android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/tv_collect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="33dp"
-            android:layout_toRightOf="@+id/tv_type"
-            android:drawablePadding="7dp"
-            android:drawableRight="@mipmap/pic33"
-            android:singleLine="true"
-            android:text="收藏量"
-            android:textColor="#999999"
-            android:textSize="13sp" />
+            <RadioButton
+                android:id="@+id/tv_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="33dp"
+                android:drawablePadding="7dp"
+                android:drawableRight="@mipmap/pic33"
+                android:singleLine="true"
+                android:text="收藏量"
+                android:button="@null"
+                android:textColor="@drawable/selector_city_info_typeface"
+                android:textSize="13sp" />
+        </RadioGroup>
 
         <com.dw.imximeng.widgets.ImageViewRoundOval
             android:id="@+id/iv_head"

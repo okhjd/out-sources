@@ -74,6 +74,7 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     private String cateId = "";
 
     private long mClickTime = 0;
+    private String orderby = "zxfb";
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -119,7 +120,7 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
         showProgressBar();
         OkHttpUtils.post().url(MethodHelper.INFORMATION_CATE_LIST)
                 .addParams("language", language ? "cn" : "mn")//中文：cn，蒙古文：mn
-                .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))//中文：cn，蒙古文：mn
+                .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
                 .build().execute(new Callback<Result>() {
             @Override
             public Result parseNetworkResponse(Response response, int id) throws Exception {
@@ -180,10 +181,10 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     }
 
     @OnItemClick(R.id.lv_info)
-    public void onListViewItemClick(int position){
+    public void onListViewItemClick(int position) {
         Bundle bundle = new Bundle();
         bundle.putString(ActivityExtras.EXTRAS_INFO_DETAILS_CITY_ID, city);
-        bundle.putString(ActivityExtras.EXTRAS_INFO_DETAILS_ID, listBeans.get(position-1).getId());
+        bundle.putString(ActivityExtras.EXTRAS_INFO_DETAILS_ID, listBeans.get(position - 1).getId());
         ActivityUtils.overlay(this, InformationDetailsActivity.class, bundle);
     }
 
@@ -232,9 +233,9 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
                         lvInfo.setVisibility(View.VISIBLE);
                         llEmpty.setVisibility(View.GONE);
                     }
-                    if (information.getCateList().isEmpty()){
+                    if (information.getCateList().isEmpty()) {
                         adapter.notifyDataSetChanged();
-                    }else {
+                    } else {
                         adapter.setComment(information.getCateList().get(0).getIscomment().equals("1"));
                     }
                 }
@@ -245,20 +246,19 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
     @Override
     public void onRefresh() {
         page = 1;
-        getInfoList(BaseApplication.userInfo.getArea(),
-                BaseApplication.userInfo.getSessionid(), cateId, "", "",
+        getInfoList(city, BaseApplication.userInfo.getSessionid(), cateId, "", orderby,
                 String.valueOf(page), sharedPreferencesHelper.isSwitchLanguage());
     }
 
     @Override
     public void onLoad() {
         page++;
-        getInfoList(BaseApplication.userInfo.getArea(),
-                BaseApplication.userInfo.getSessionid(), cateId, "", "",
+        getInfoList(city, BaseApplication.userInfo.getSessionid(), cateId, "", "",
                 String.valueOf(page), sharedPreferencesHelper.isSwitchLanguage());
     }
 
-    @OnClick({R.id.tv_title, R.id.iv_add, R.id.iv_sign_in, R.id.ll_load_error, R.id.iv_push})
+    @OnClick({R.id.tv_title, R.id.iv_add, R.id.iv_sign_in, R.id.ll_load_error, R.id.iv_push,
+            R.id.tv_new_release, R.id.tv_collect})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_add:
@@ -288,6 +288,16 @@ public class CityInformationActivity extends BaseActivity implements AdapterView
                 break;
             case R.id.iv_push:
                 ActivityUtils.overlay(this, ReleaseInfoActivity.class, BaseApplication.userInfo.getArea());
+                break;
+            case R.id.tv_new_release:
+                page = 1;
+                orderby = "zxfb";
+                lvInfo.firstOnRefresh();
+                break;
+            case R.id.tv_collect:
+                page = 1;
+                orderby = "sczd";
+                lvInfo.firstOnRefresh();
                 break;
         }
     }

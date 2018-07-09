@@ -2,6 +2,7 @@ package com.dw.imximeng.adapters;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,7 +57,6 @@ public class InformationAdapter extends CommonAdapter<Information.ListBean> {
         }
 
         helper.setText(R.id.tv_title, item.getTitle());
-        helper.setText(R.id.tv_content, item.getContent());
         helper.setText(R.id.tv_phone, item.getShowTelephone());
         helper.setText(R.id.tv_collection, item.getCommentnum() + "");
         TextView tvComment = helper.getView(R.id.tv_comment);
@@ -88,6 +88,23 @@ public class InformationAdapter extends CommonAdapter<Information.ListBean> {
             @Override
             public void onClick(View v) {
                 ActivityUtils.overlay(mContext, UserHomeActivity.class, item.getUid());
+            }
+        });
+        final TextView tvContent = helper.getView(R.id.tv_content);
+        tvContent.setText(item.getContent());
+        final TextView tvDetailsTips = helper.getView(R.id.tv_details);
+        tvContent.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                int lines = tvContent.getLineCount();
+                if (lines > 3){
+                    tvDetailsTips.setVisibility(View.VISIBLE);
+                }else {
+                    tvDetailsTips.setVisibility(View.GONE);
+                }
+                //这个回调会调用多次，获取完行数记得注销监听
+                tvContent.getViewTreeObserver().removeOnPreDrawListener(this);
+                return false;
             }
         });
     }

@@ -96,6 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="详情"
+            android:visibility="gone"
             android:textColor="#699df5"
             android:textSize="14sp" />
 

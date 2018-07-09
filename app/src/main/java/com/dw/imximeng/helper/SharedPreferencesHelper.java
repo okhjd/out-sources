@@ -113,11 +113,11 @@ public class SharedPreferencesHelper {
     }
 
     public String getThirdKey() {
-        return pref.getString(THIRD_KEY, "");
+        return pref.getString(THIRD_KEY, null);
     }
 
     public String getThirdType() {
-        return pref.getString(THIRD_TYPE, "");
+        return pref.getString(THIRD_TYPE, null);
     }
 
     public void clearUser(){

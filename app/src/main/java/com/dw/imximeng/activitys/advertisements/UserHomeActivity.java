@@ -3,10 +3,9 @@ package com.dw.imximeng.activitys.advertisements;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.dw.imximeng.R;
@@ -20,6 +19,9 @@ import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.StringUtils;
 import com.dw.imximeng.widgets.SwipeRefreshView;
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.ILoadingLayout;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
@@ -35,7 +37,7 @@ import okhttp3.Response;
  * @author hjd
  * @Created_Time 2018\7\7 0007
  */
-public class UserHomeActivity extends BaseActivity implements SwipeRefreshView.OnLoadMoreListener,SwipeRefreshLayout.OnRefreshListener {
+public class UserHomeActivity extends BaseActivity{
     @BindView(R.id.iv_backgroup)
     ImageView ivBackgroup;
     @BindView(R.id.iv_head)
@@ -48,8 +50,8 @@ public class UserHomeActivity extends BaseActivity implements SwipeRefreshView.O
     TextView tvAutograph;
     @BindView(R.id.lv_info)
     ListView lvInfo;
-    @BindView(R.id.swipeRefresh)
-    SwipeRefreshView swipeRefresh;
+    @BindView(R.id.refresh_scroll_view)
+    PullToRefreshScrollView refreshScrollView;
     private String uid = "";
     private int page = 1;
     private UserHomeAdapter adapter;
@@ -68,13 +70,6 @@ public class UserHomeActivity extends BaseActivity implements SwipeRefreshView.O
 
     @Override
     public void initView() {
-        swipeRefresh.setOnLoadMoreListener(this);
-        swipeRefresh.setOnRefreshListener(this);
-        swipeRefresh.setItemCount(10);
-
-        // 手动调用,通知系统去测量
-        swipeRefresh.measure(0, 0);
-        swipeRefresh.setRefreshing(true);
 
         adapter = new UserHomeAdapter(this, list, R.layout.item_user_home);
         lvInfo.setAdapter(adapter);
@@ -82,7 +77,41 @@ public class UserHomeActivity extends BaseActivity implements SwipeRefreshView.O
 
     @Override
     public void initData() {
+        intRefreshScrollView();
         getUserHomeInfo(BaseApplication.userInfo.getSessionid(), uid, page);
+    }
+
+    private void intRefreshScrollView() {
+        //1.设置模式
+        refreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
+
+        //2.通过调用getLoadingLayoutProxy方法，设置下拉刷新状况布局中显示的文字 ，第一个参数为true,代表下拉刷新
+        ILoadingLayout headLables = refreshScrollView.getLoadingLayoutProxy(true, false);
+        headLables.setPullLabel("下拉刷新");
+        headLables.setRefreshingLabel("正在刷新");
+        headLables.setReleaseLabel("松开刷新");
+
+        //2.设置上拉加载底部视图中显示的文字，第一个参数为false,代表上拉加载更多
+        ILoadingLayout footerLables = refreshScrollView.getLoadingLayoutProxy(false, true);
+        footerLables.setPullLabel("上拉加载");
+        footerLables.setRefreshingLabel("正在载入...");
+        footerLables.setReleaseLabel("松开加载更多");
+
+        //3.设置监听事件
+        refreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ScrollView>() {
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                page = 1;
+                getUserHomeInfo(BaseApplication.userInfo.getSessionid(), uid, page);
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
+                page++;
+                getUserHomeInfo(BaseApplication.userInfo.getSessionid(), uid, page);
+            }
+        });
+
     }
 
     private void getUserHomeInfo(String sessionid, String uid, int cpage) {
@@ -100,24 +129,14 @@ public class UserHomeActivity extends BaseActivity implements SwipeRefreshView.O
             @Override
             public void onError(Call call, Exception e, int id) {
                 // 加载完数据设置为不刷新状态，将下拉进度收起来
-                if (swipeRefresh.isRefreshing()) {
-                    swipeRefresh.setRefreshing(false);
-                }
-                if (page > 1) {
-                    swipeRefresh.setLoading(false);
-                }
+                refreshScrollView.onRefreshComplete();
                 Log.e(this.getClass().getName(), "onError" + e.getMessage());
             }
 
             @Override
             public void onResponse(Result response, int id) {
                 // 加载完数据设置为不刷新状态，将下拉进度收起来
-                if (swipeRefresh.isRefreshing()) {
-                    swipeRefresh.setRefreshing(false);
-                }
-                if (page > 1) {
-                    swipeRefresh.setLoading(false);
-                }
+                refreshScrollView.onRefreshComplete();
                 if (response.getStatus() == 1) {
                     String data = new Gson().toJson(response.getData());
                     UserHome dataBean = new Gson().fromJson(data, UserHome.class);
@@ -128,28 +147,19 @@ public class UserHomeActivity extends BaseActivity implements SwipeRefreshView.O
                     tvPhone.setText(dataBean.getUserInfo().getShowPhone());
                     tvAutograph.setText(dataBean.getUserInfo().getSignature());
 
-                    if (page == 1){
+                    if (page == 1) {
                         list.clear();
+                        refreshScrollView.getRefreshableView().smoothScrollTo(0,0);
                     }
-                    for (int i = 0;i<20;i++) {
-                        list.addAll(dataBean.getList());
+                    if (dataBean.getList().isEmpty()){
+                        refreshScrollView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+                    }else {
+                        refreshScrollView.setMode(PullToRefreshBase.Mode.BOTH);
                     }
+                    list.addAll(dataBean.getList());
                     adapter.notifyDataSetChanged();
-
                 }
             }
         });
-    }
-
-    @Override
-    public void onRefresh() {
-        page = 1;
-        getUserHomeInfo(BaseApplication.userInfo.getSessionid(), uid, page);
-    }
-
-    @Override
-    public void onLoadMore() {
-        page++;
-        getUserHomeInfo(BaseApplication.userInfo.getSessionid(), uid, page);
     }
 }
