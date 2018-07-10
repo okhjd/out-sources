@@ -1,5 +1,9 @@
 package com.dw.imximeng.activitys.advertisements;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.GridView;
@@ -22,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 import okhttp3.Call;
 import okhttp3.Response;
@@ -37,6 +40,7 @@ public class SmallToolsActivity extends BaseActivity {
 
     private SmallToolsAdapter adapter;
     private List<SmallTools> list = new ArrayList<>();
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_small_tools;
@@ -53,35 +57,6 @@ public class SmallToolsActivity extends BaseActivity {
     public void initData() {
         toolsList(sharedPreferencesHelper.isSwitchLanguage());
     }
-
-//    @OnClick({R.id.tv_garage_loan, R.id.tv_ordinary})
-//    public void onClick(View view) {
-//        Bundle bundle = new Bundle();
-//        String url = "";
-//        String title = "";
-//        switch (view.getId()) {
-//            case R.id.tv_garage_loan:
-//                url = "http://m.db.house.qq.com/index.php?mod=calculator&type=sd&rf=";
-//                title = tvGarageLoan.getText().toString();
-//                bundle.clear();
-////                bundle.putString(ActivityExtras.EXTRAS_USER_PROTOCOL_URL, url);
-////                bundle.putString(ActivityExtras.EXTRAS_WEB_TITLE, tvGarageLoan.getText().toString());
-////                ActivityUtils.overlay(this, WebActivity.class, bundle);
-//                break;
-//            case R.id.tv_ordinary:
-//                url = "http://www.zxjsq.net/";
-//                title = tvOrdinary.getText().toString();
-//                bundle.clear();
-////                bundle.putString(ActivityExtras.EXTRAS_USER_PROTOCOL_URL, url);
-////                bundle.putString(ActivityExtras.EXTRAS_WEB_TITLE, tvOrdinary.getText().toString());
-////                ActivityUtils.overlay(this, WebActivity.class, bundle);
-//                break;
-//        }
-//        bundle.clear();
-//        bundle.putString(ActivityExtras.EXTRAS_USER_PROTOCOL_URL, url);
-//        bundle.putString(ActivityExtras.EXTRAS_WEB_TITLE, title);
-//        ActivityUtils.overlay(this, WebActivity.class, bundle);
-//    }
 
     private void toolsList(boolean language) {
         showProgressBar();
@@ -117,10 +92,41 @@ public class SmallToolsActivity extends BaseActivity {
     }
 
     @OnItemClick(R.id.gv_tools)
-    public void onItemClick(int position){
-        Bundle bundle = new Bundle();
-        bundle.putString(ActivityExtras.EXTRAS_USER_PROTOCOL_URL, list.get(position).getUrl());
-        bundle.putString(ActivityExtras.EXTRAS_WEB_TITLE, list.get(position).getName());
-        ActivityUtils.overlay(this, WebActivity.class, bundle);
+    public void onItemClick(int position) {
+        if (list.get(position).getName().equals("普通计算器")){
+            openJS();
+        }else {
+            Bundle bundle = new Bundle();
+            bundle.putString(ActivityExtras.EXTRAS_USER_PROTOCOL_URL, list.get(position).getUrl());
+            bundle.putString(ActivityExtras.EXTRAS_WEB_TITLE, list.get(position).getName());
+            ActivityUtils.overlay(this, WebActivity.class, bundle);
+        }
+    }
+
+    /**
+     * 打开计算机
+     */
+    private void openJS() {
+        PackageInfo pak = getAllApps(this, "Calculator", "calculator"); //大小写
+        if (pak != null) {
+            Intent intent = new Intent();
+            intent = this.getPackageManager().getLaunchIntentForPackage(pak.packageName);
+            startActivity(intent);
+        } else {
+            showToast("未找到计算器");
+        }
+    }
+
+    private PackageInfo getAllApps(Context context, String app_flag_1, String app_flag_2) {
+        PackageManager pManager = context.getPackageManager();
+        // 获取手机内所有应用
+        List<PackageInfo> packlist = pManager.getInstalledPackages(0);
+        for (int i = 0; i < packlist.size(); i++) {
+            PackageInfo pak = (PackageInfo) packlist.get(i);
+            if (pak.packageName.contains(app_flag_1) || pak.packageName.contains(app_flag_2)) {
+                return pak;
+            }
+        }
+        return null;
     }
 }

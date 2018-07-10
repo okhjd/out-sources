@@ -78,7 +78,7 @@
                 android:textStyle="bold"
                 android:background="@color/white"
                 android:includeFontPadding="false"
-                android:text="500"/>
+                android:inputType="numberDecimal"/>
         </RelativeLayout>
         <View
             android:layout_width="match_parent"

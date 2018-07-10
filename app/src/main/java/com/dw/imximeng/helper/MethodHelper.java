@@ -116,4 +116,6 @@ public interface MethodHelper {
     String REPORT_TYPE = BuildConfig.API_ENV + "/member/app/information/reportType";
     //充值页面数据（支付方式）
     String PAYMENT = BuildConfig.API_ENV + "/member/app/user/olrecharge";
+    //版本信息
+    String VERSION_INFO = BuildConfig.API_ENV + "/member/app/user/versionInfo";
 }

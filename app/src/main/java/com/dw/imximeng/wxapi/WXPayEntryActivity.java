@@ -67,6 +67,7 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
             }
             else {
                 showToast("支付失败");
+                finish();
             }
         }
     }

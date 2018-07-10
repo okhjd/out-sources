@@ -88,6 +88,8 @@ public class AdvertisementFragment extends BaseFragment {
                     MessageEvent messageEvent = new MessageEvent();
                     messageEvent.setMsgCode(MessageEvent.MessageType.SWITCH_PAGE);
                     EventBus.getDefault().post(messageEvent);
+                }else {
+                    ActivityUtils.overlay(getActivity(), CityInformationActivity.class, BaseApplication.userInfo.getArea());
                 }
                 break;
             case R.id.iv_search:

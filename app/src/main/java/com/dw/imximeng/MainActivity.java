@@ -10,12 +10,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.dw.imximeng.adapters.ViewPagerAdapter;
+import com.dw.imximeng.app.UpdateManger;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.MessageEvent;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.bean.UserInfo;
 import com.dw.imximeng.bean.UserSiteInfo;
+import com.dw.imximeng.bean.VersionInfo;
 import com.dw.imximeng.fragments.main.AdvertisementFragment;
 import com.dw.imximeng.fragments.main.HomeFragment;
 import com.dw.imximeng.fragments.main.MyselfFragment;
@@ -23,6 +25,7 @@ import com.dw.imximeng.fragments.main.RegionFragment;
 import com.dw.imximeng.helper.LanguageHelper;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.StringUtils;
+import com.dw.imximeng.widgets.AlertDialog;
 import com.dw.imximeng.widgets.ViewPagerSlide;
 import com.google.gson.Gson;
 import com.umeng.socialize.UMShareAPI;
@@ -70,6 +73,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         if (BaseApplication.userInfo.getSessionid() != null) {
             getUserInfo(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
         }
+        getVersionInfo();
     }
 
     @Override
@@ -233,5 +237,51 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void getVersionInfo() {
+        OkHttpUtils.post().url(MethodHelper.VERSION_INFO)
+                .build().execute(new Callback<Result>() {
+            @Override
+            public Result parseNetworkResponse(Response response, int id) throws Exception {
+                String string = response.body().string();
+                return new Gson().fromJson(string, Result.class);
+            }
+
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                Log.e(this.getClass().getName(), "onError" + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Result response, int id) {
+                if (response.getStatus() == 1) {
+                    String data = new Gson().toJson(response.getData());
+                    BaseApplication.versionInfo = new Gson().fromJson(data, VersionInfo.class);
+
+                    showDialog(BaseApplication.versionInfo.getRemarks(), BaseApplication.versionInfo.getShowVfile());
+                }
+            }
+        });
+    }
+
+    private void showDialog(String msg, final String url) {
+        new AlertDialog(this)
+                .builder()
+                .setTitle("温馨提示")
+                .setMsg(msg)
+                .setPositiveButton("确定", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        new UpdateManger(MainActivity.this, url).checkUpdateInfo();
+                    }
+                })
+                .setNegativeButton("取消", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                }).show();
     }
 }

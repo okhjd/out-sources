@@ -60,12 +60,13 @@ public class GvCateListAdapter extends BaseAdapter {
         }
         CateList.CateItem bean = dataList.get(i);
         if (bean != null) {
-            ImageLoader.getInstance().displayImage(bean.getIcon(), mHolder.iv_img);
             mHolder.tv_text.setText(bean.getName());
             if (bean.isCheck()){
                 mHolder.tv_text.setTextColor(Color.parseColor("#568fed"));
+                ImageLoader.getInstance().displayImage(bean.getSel_icon(), mHolder.iv_img);
             }else {
                 mHolder.tv_text.setTextColor(Color.parseColor("#484848"));
+                ImageLoader.getInstance().displayImage(bean.getIcon(), mHolder.iv_img);
             }
         }
         return itemView;

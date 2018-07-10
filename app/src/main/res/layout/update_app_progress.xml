@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_title"
+        android:text="正在下载..."
+        android:layout_width="wrap_content"
+        android:textColor="#333333"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:layout_height="wrap_content" />
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_title"
+        android:max="100"/>
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#333333"
+        android:layout_below="@+id/progress"
+        />
+    <TextView
+        android:id="@+id/tv_message2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#333333"
+        android:layout_below="@+id/progress"
+        android:layout_alignRight="@+id/progress"
+        android:layout_marginBottom="10dp"
+        />
+</RelativeLayout>
+

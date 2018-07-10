@@ -8,8 +8,10 @@ import android.graphics.Point;
 import android.support.multidex.MultiDex;
 import android.view.WindowManager;
 
+import com.dw.imximeng.app.UnCeHandler;
 import com.dw.imximeng.bean.UserInfo;
 import com.dw.imximeng.bean.UserSiteInfo;
+import com.dw.imximeng.bean.VersionInfo;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.umeng.commonsdk.UMConfigure;
@@ -30,6 +32,7 @@ public class BaseApplication extends Application {
     public static boolean language = true;
     public static UserInfo userInfo = new UserInfo();
     public static UserSiteInfo userSiteInfo = new UserSiteInfo();
+    public static VersionInfo versionInfo = new VersionInfo();
 
     //自定义的屏幕宽度，代表手机总得宽度为1440pt
     public final static float DESIGN_WIDTH = 1440;
@@ -40,7 +43,7 @@ public class BaseApplication extends Application {
         super.onCreate();
         _context = getApplicationContext();
         _resource = _context.getResources();
-
+        initUnCeHandler();
         //okhttp网络请求初始化
         initOkhttp();
 
@@ -53,6 +56,14 @@ public class BaseApplication extends Application {
         UMConfigure.setLogEnabled(true);
         UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);
         initSdk();
+    }
+
+    /**
+     * 异常退出处理
+     */
+    private void initUnCeHandler(){
+        UnCeHandler catchExcep = new UnCeHandler(this);
+        Thread.setDefaultUncaughtExceptionHandler(catchExcep);
     }
 
     private void initOkhttp() {

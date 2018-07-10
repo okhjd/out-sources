@@ -16,6 +16,7 @@ public class CateList {
         private int id;
         private String name;
         private String icon;
+        private String sel_icon;
         private List<AttrList> attrList;
         private boolean check;
 
@@ -57,6 +58,14 @@ public class CateList {
 
         public void setCheck(boolean check) {
             this.check = check;
+        }
+
+        public String getSel_icon() {
+            return sel_icon;
+        }
+
+        public void setSel_icon(String sel_icon) {
+            this.sel_icon = sel_icon;
         }
     }
 

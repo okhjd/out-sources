@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.view.PagerAdapter;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class VpGuideAdapter extends PagerAdapter implements View.OnClickListener
 
         ImageView imageView = (ImageView)view.findViewById(R.id.iv_guide);
         imageView.setImageResource(imageViews[position]);
+        view.setForegroundGravity(Gravity.CENTER);
 //        container.addView(view);
 //        ImageView iv = new ImageView(activity);
 //        iv.setLayoutParams(new ViewPager.LayoutParams());//设置布局
