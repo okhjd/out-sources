@@ -1,7 +1,5 @@
 package com.dw.imximeng.bean;
 
-import java.util.List;
-
 /**
  * @author hjd
  * @Created_Time 2018\6\26 0026

@@ -114,4 +114,6 @@ public interface MethodHelper {
     String PUT_FORWARD = BuildConfig.API_ENV + "/member/app/user/putforwardApply";
     //举报类型
     String REPORT_TYPE = BuildConfig.API_ENV + "/member/app/information/reportType";
+    //充值页面数据（支付方式）
+    String PAYMENT = BuildConfig.API_ENV + "/member/app/user/olrecharge";
 }

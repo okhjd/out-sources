@@ -14,6 +14,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CookieJarImpl;
 import com.zhy.http.okhttp.cookie.store.MemoryCookieStore;
@@ -88,6 +89,7 @@ public class BaseApplication extends Application {
     }
 
     private void initSdk() {
+        UMShareAPI.get(this);
         PlatformConfig.setWeixin("wx0179314396d8efb8", "da18d94ce099a0c8b12135f313ef0c2d");
         PlatformConfig.setQQZone("1106928955", "flJU4erkx44F1zXX");
     }

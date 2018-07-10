@@ -76,7 +76,20 @@ public class SignInActivity extends BaseActivity {
 
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            userLogin(platform.getName().toLowerCase(), data.get("uid"));
+            if (data != null) {
+                if (platform.name().equals("WEIXIN")){
+                    userLogin("wx", data.get("uid"));
+                }else {
+                    userLogin("qq", data.get("uid"));
+                }
+            } else {
+//                showToast("应用未启动");
+                if (platform.getName().equals(SHARE_MEDIA.QQ.toString().toLowerCase())) {
+                    UMShareAPI.get(SignInActivity.this).getPlatformInfo(SignInActivity.this, SHARE_MEDIA.QQ, umAuthListener);
+                }else if (platform.getName().equals(SHARE_MEDIA.WEIXIN.toString().toLowerCase())){
+                    UMShareAPI.get(SignInActivity.this).getPlatformInfo(SignInActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
+                }
+            }
         }
 
         @Override
@@ -157,10 +170,11 @@ public class SignInActivity extends BaseActivity {
                 ActivityUtils.overlay(this, ForgetPasswordActivity.class);
                 break;
             case R.id.iv_tencent:
-                UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, umAuthListener);
+                UMShareAPI.get(this).deleteOauth(this, SHARE_MEDIA.QQ, umAuthListener);
                 break;
             case R.id.iv_weChat:
-                UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, umAuthListener);
+//                UMShareAPI.get(this).deleteOauth(this, SHARE_MEDIA.WEIXIN, umAuthListener);
+                UMShareAPI.get(SignInActivity.this).getPlatformInfo(SignInActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
                 break;
             case R.id.cb_visibility:
                 if (cbVisibility.isChecked()) {
@@ -270,10 +284,10 @@ public class SignInActivity extends BaseActivity {
                     EventBus.getDefault().post(messageEvent);
 
                     finish();
-                }else if (response.getStatus() == 0){
+                } else if (response.getStatus() == 0) {
                     String data = new Gson().toJson(response.getData());
                     ErrorInfo error = new Gson().fromJson(data, ErrorInfo.class);
-                    if (error.getError_code().equals("00002")){
+                    if (error.getError_code().equals("00002")) {
                         Bundle bundle = new Bundle();
                         bundle.putString(ActivityExtras.EXTRAS_THIRD_PARTY_TYPE, type);
                         bundle.putString(ActivityExtras.EXTRAS_THIRD_PARTY_KEY, key);

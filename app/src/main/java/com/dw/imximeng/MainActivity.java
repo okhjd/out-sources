@@ -1,5 +1,6 @@
 package com.dw.imximeng;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -24,6 +25,7 @@ import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.StringUtils;
 import com.dw.imximeng.widgets.ViewPagerSlide;
 import com.google.gson.Gson;
+import com.umeng.socialize.UMShareAPI;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
@@ -225,5 +227,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

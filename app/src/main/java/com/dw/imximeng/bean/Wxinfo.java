@@ -15,7 +15,7 @@ public class Wxinfo {
     private String noncestr;
     private String timestamp;
     private String prepayid;
-    private String sign;
+    private String paysign;
 
     public String getAppid() {
         return appid;
@@ -66,10 +66,10 @@ public class Wxinfo {
     }
 
     public String getSign() {
-        return sign;
+        return paysign;
     }
 
     public void setSign(String sign) {
-        this.sign = sign;
+        this.paysign = sign;
     }
 }
