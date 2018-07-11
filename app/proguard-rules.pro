@@ -293,3 +293,6 @@
 -keep class com.alipay.tscenter.** { *; }
 -keep class com.ta.utdid2.** { *;}
 -keep class com.ut.device.** { *;}
+
+-dontwarn cn.com.bluemoon.cardocr.**
+-keep class cn.com.bluemoon.cardocr.** {*;}

@@ -22,6 +22,9 @@ import com.zhy.http.okhttp.callback.Callback;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import cn.com.bluemoon.cardocr.lib.CaptureActivity;
+import cn.com.bluemoon.cardocr.lib.bean.BankInfo;
+import cn.com.bluemoon.cardocr.lib.common.CardType;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -42,6 +45,7 @@ public class PerfectInformationActivity extends BaseActivity {
     TextView tvComplete;
 
     private Bank bank;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_perfect_info;
@@ -64,7 +68,7 @@ public class PerfectInformationActivity extends BaseActivity {
                 ActivityUtils.startForResult(this, BankListActivity.class, ActivityForResultCode.BNAK_CODE);
                 break;
             case R.id.tv_complete:
-                if (bank == null){
+                if (bank == null) {
                     showToast("请选择银行");
                     return;
                 }
@@ -72,6 +76,7 @@ public class PerfectInformationActivity extends BaseActivity {
                         etPhone.getText().toString().trim(), etBankCard.getText().toString().trim());
                 break;
             case R.id.iv_picture:
+                CaptureActivity.startAction(this, CardType.TYPE_BANK, 1);
                 break;
         }
     }
@@ -122,11 +127,15 @@ public class PerfectInformationActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK){
-            switch (requestCode){
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
                 case ActivityForResultCode.BNAK_CODE:
                     bank = ActivityUtils.getParcelableExtra(data);
                     tvBank.setText(bank.getName());
+                    break;
+                case 1:
+                    BankInfo info = (BankInfo) data.getSerializableExtra(CaptureActivity.BUNDLE_DATA);
+                    etBankCard.setText(info.toString());
                     break;
             }
         }

@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import com.dw.imximeng.MainActivity;
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.signIn.SignInActivity;
+import com.dw.imximeng.app.AppConfig;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.Result;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -99,6 +101,8 @@ public class LoadActivity extends BaseActivity {
                     String data = new Gson().toJson(response.getData());
                     BaseApplication.userInfo = new Gson().fromJson(data, UserInfo.class);
 
+                    JPushInterface.setAlias(LoadActivity.this, AppConfig.JPUSH_SEQUENCE, BaseApplication.userInfo.getId()+"");
+
                     intent.setClass(getApplicationContext(), MainActivity.class);
                 } else {
                     if (sharedPreferencesHelper.isFirstTimeLaunch()) {
@@ -146,6 +150,8 @@ public class LoadActivity extends BaseActivity {
 
                     String data = new Gson().toJson(response.getData());
                     BaseApplication.userInfo = new Gson().fromJson(data, UserInfo.class);
+
+                    JPushInterface.setAlias(LoadActivity.this, AppConfig.JPUSH_SEQUENCE, BaseApplication.userInfo.getId()+"");
 
                     intent.setClass(getApplicationContext(), MainActivity.class);
                 } else {

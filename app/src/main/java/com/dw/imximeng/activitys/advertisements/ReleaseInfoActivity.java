@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.SelectionActivity;
 import com.dw.imximeng.activitys.SelectionCateActivity;
+import com.dw.imximeng.activitys.myself.PaymentActivity;
 import com.dw.imximeng.adapters.CateListAdapter;
 import com.dw.imximeng.app.ActivityExtras;
 import com.dw.imximeng.base.BaseActivity;
@@ -546,7 +547,7 @@ public class ReleaseInfoActivity extends BaseActivity {
                 }).show();
     }
 
-    private void showPushChargeDialog(int num, final String attrs, final String releaseTitle, final String content, final String phone) {
+    private void showPushChargeDialog(final int num, final String attrs, final String releaseTitle, final String content, final String phone) {
 
         SpannableString spannableString = new SpannableString("今日免费发布次数已用完\n本次发布需支付：￥" + num);
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#689df5"));
@@ -561,6 +562,7 @@ public class ReleaseInfoActivity extends BaseActivity {
                     public void onClick(View v) {
 
                         //开启支付页面
+                        ActivityUtils.overlay(ReleaseInfoActivity.this, PaymentActivity.class, num + "");
                     }
                 })
                 .setNegativeButton("取消", new View.OnClickListener() {

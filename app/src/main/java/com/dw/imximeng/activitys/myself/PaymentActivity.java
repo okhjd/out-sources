@@ -10,11 +10,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.dw.imximeng.R;
 import com.dw.imximeng.adapters.PaymentListAdapter;
+import com.dw.imximeng.app.AppManager;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.PayResult;
@@ -22,7 +22,6 @@ import com.dw.imximeng.bean.Payment;
 import com.dw.imximeng.bean.Result;
 import com.dw.imximeng.bean.Wxinfo;
 import com.dw.imximeng.helper.ActivityUtils;
-import com.dw.imximeng.helper.MD5;
 import com.dw.imximeng.helper.MethodHelper;
 import com.dw.imximeng.helper.StringUtils;
 import com.google.gson.Gson;
@@ -34,7 +33,6 @@ import com.zhy.http.okhttp.callback.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,7 +51,7 @@ public class PaymentActivity extends BaseActivity {
     @BindView(R.id.tv_price)
     TextView tvPrice;
     private IWXAPI api;
-
+    private static final int SDK_PAY_FLAG = 1001;
     private PaymentListAdapter adapter;
     private List<Payment.PtypeListBean> mList = new ArrayList<>();
     private String price;
@@ -117,7 +115,7 @@ public class PaymentActivity extends BaseActivity {
                     req.timeStamp = wxinfo.getData().getTimestamp();
                     req.packageValue = wxinfo.getData().getPackageX();
                     req.sign = wxinfo.getData().getPaysign();
-                    req.extData = "app data"; // optional
+                    req.extData = "payment_activity"; // optional
 
                     api.sendReq(req);
                 }else if(type.equals("alipay")){
@@ -127,7 +125,7 @@ public class PaymentActivity extends BaseActivity {
             }
         });
     }
-    private static final int SDK_PAY_FLAG = 1001;
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -138,6 +136,7 @@ public class PaymentActivity extends BaseActivity {
             // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
             if (TextUtils.equals(resultStatus, "9000")) {
                 showToast("支付成功");
+                AppManager.getAppManager().finishActivity(RechargeActivity.class);
                 finish();
             } else {
                 // 判断resultStatus 为非“9000”则代表可能支付失败

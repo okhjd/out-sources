@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.dw.imximeng.R;
 import com.dw.imximeng.activitys.WebActivity;
 import com.dw.imximeng.app.ActivityExtras;
+import com.dw.imximeng.app.AppConfig;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.MessageEvent;
@@ -21,6 +22,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * @author hjd
@@ -119,6 +121,7 @@ public class SetActivity extends BaseActivity {
                 .setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        JPushInterface.deleteAlias(SetActivity.this, AppConfig.JPUSH_SEQUENCE);
                         BaseApplication.userInfo = new UserInfo();
                         sharedPreferencesHelper.clearUser();
                         MessageEvent messageEvent = new MessageEvent();

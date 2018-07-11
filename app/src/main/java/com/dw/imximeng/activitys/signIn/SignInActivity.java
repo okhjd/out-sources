@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.dw.imximeng.R;
 import com.dw.imximeng.app.ActivityExtras;
+import com.dw.imximeng.app.AppConfig;
 import com.dw.imximeng.base.BaseActivity;
 import com.dw.imximeng.base.BaseApplication;
 import com.dw.imximeng.bean.ErrorInfo;
@@ -41,6 +42,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -236,6 +238,7 @@ public class SignInActivity extends BaseActivity {
                 closeProgressBar();
                 showToast(response.getMessage());
                 if (response.getStatus() == 1) {
+
                     SharedPreferencesHelper sph = new SharedPreferencesHelper(getApplicationContext());
                     sph.setUserPhone(phone);
                     sph.setUserPassword(password);
@@ -245,6 +248,8 @@ public class SignInActivity extends BaseActivity {
                     MessageEvent messageEvent = new MessageEvent();
                     messageEvent.setMsgCode(MessageEvent.MessageType.REFRESH_MAIN);
                     EventBus.getDefault().post(messageEvent);
+
+                    JPushInterface.setAlias(SignInActivity.this, AppConfig.JPUSH_SEQUENCE, BaseApplication.userInfo.getId()+"");
 
                     finish();
                 }
@@ -282,6 +287,8 @@ public class SignInActivity extends BaseActivity {
                     MessageEvent messageEvent = new MessageEvent();
                     messageEvent.setMsgCode(MessageEvent.MessageType.REFRESH_MAIN);
                     EventBus.getDefault().post(messageEvent);
+
+                    JPushInterface.setAlias(SignInActivity.this, AppConfig.JPUSH_SEQUENCE, BaseApplication.userInfo.getId()+"");
 
                     finish();
                 } else if (response.getStatus() == 0) {

@@ -5,10 +5,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.dw.imximeng.R;
+import com.dw.imximeng.activitys.myself.PaymentActivity;
+import com.dw.imximeng.activitys.myself.RechargeActivity;
+import com.dw.imximeng.app.AppManager;
 import com.dw.imximeng.base.BaseActivity;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelpay.PayResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
@@ -62,6 +66,11 @@ public class WXPayEntryActivity extends BaseActivity implements IWXAPIEventHandl
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             if(resp.errCode==0){
                 showToast("支付成功");
+                PayResp re = (PayResp )resp;
+                if (re.extData.equals("payment_activity")) {
+                    AppManager.getAppManager().finishActivity(RechargeActivity.class);
+                    AppManager.getAppManager().finishActivity(PaymentActivity.class);
+                }
                 finish();
             }
             else {
