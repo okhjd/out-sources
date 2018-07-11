@@ -1,16 +1,21 @@
 package com.dw.imximeng.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dw.imximeng.R;
+import com.dw.imximeng.activitys.LargerImageActivity;
+import com.dw.imximeng.app.ActivityExtras;
 import com.dw.imximeng.app.ViewHolder;
 import com.dw.imximeng.bean.MyRelease;
+import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.widgets.GridViewNoScroll;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -52,6 +57,17 @@ public class MyReleaseAdapter extends CommonAdapter<MyRelease> {
             ivImage.setVisibility(View.GONE);
             gvImage.setVisibility(View.GONE);
         }
+
+        ivImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(ActivityExtras.EXTRAS_IMAGE_LARGER_POSITION, 0);
+                bundle.putSerializable(ActivityExtras.EXTRAS_IMAGE_LARGER_LIST,
+                        new ArrayList<String>().add(item.getImgList().get(0).getShowImg()));
+                ActivityUtils.overlay(mContext, LargerImageActivity.class, bundle);
+            }
+        });
 
         TextView tvDetele = helper.getView(R.id.tv_delete);
         if (item.getSh_status() == 0) {

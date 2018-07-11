@@ -114,6 +114,8 @@
             android:layout_alignParentTop="true"
             android:textSize="15sp"
             android:textColor="#333333"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:layout_above="@+id/rl_bottom"/>
         <RelativeLayout
             android:id="@+id/rl_bottom"

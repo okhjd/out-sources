@@ -164,6 +164,7 @@
 -keep class com.chjif.shzs.model.entity.** { *; }
 -dontwarn com.google.gson.**
 -keep class com.google.gson.** {*;}
+-keep class com.google.protobuf.** {*;}
 
 #butterknife
 -keep class butterknife.** { *; }

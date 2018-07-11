@@ -41,4 +41,7 @@ public interface ActivityExtras {
 
 
     String EXTRAS_MY_BANK_CARD_TYPE = "extras:my_bank_card_type";
+
+    String EXTRAS_IMAGE_LARGER_POSITION = "extras:image_larger_position";
+    String EXTRAS_IMAGE_LARGER_LIST = "extras:image_larger_list";
 }

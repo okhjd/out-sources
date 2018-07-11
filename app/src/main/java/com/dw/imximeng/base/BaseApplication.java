@@ -24,6 +24,7 @@ import com.zhy.http.okhttp.https.HttpsUtils;
 
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.OkHttpClient;
 
 public class BaseApplication extends Application {
@@ -46,7 +47,8 @@ public class BaseApplication extends Application {
         initUnCeHandler();
         //okhttp网络请求初始化
         initOkhttp();
-
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
         //创建默认的ImageLoader配置参数
         ImageLoaderConfiguration configuration = ImageLoaderConfiguration
                 .createDefault(this);

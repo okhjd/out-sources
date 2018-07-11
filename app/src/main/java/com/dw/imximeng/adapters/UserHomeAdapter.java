@@ -2,6 +2,7 @@ package com.dw.imximeng.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -10,16 +11,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dw.imximeng.R;
+import com.dw.imximeng.activitys.LargerImageActivity;
+import com.dw.imximeng.app.ActivityExtras;
 import com.dw.imximeng.app.ViewHolder;
 import com.dw.imximeng.bean.UserHome;
+import com.dw.imximeng.helper.ActivityUtils;
 import com.dw.imximeng.helper.MaDensityUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author hjd
  * @Created_Time 2018\6\28 0028
+ * 待优化
  */
 public class UserHomeAdapter extends CommonAdapter<UserHome.ListBean> {
     public UserHomeAdapter(Context context, List<UserHome.ListBean> mDatas, int itemLayoutId) {
@@ -27,7 +33,7 @@ public class UserHomeAdapter extends CommonAdapter<UserHome.ListBean> {
     }
 
     @Override
-    public void convert(ViewHolder helper, UserHome.ListBean item) {
+    public void convert(final ViewHolder helper, final UserHome.ListBean item) {
         helper.setText(R.id.tv_day, item.getShowDay());
         helper.setText(R.id.tv_month, item.getShowMonth());
         ImageView imageview = helper.getView(R.id.imageview);
@@ -70,6 +76,16 @@ public class UserHomeAdapter extends CommonAdapter<UserHome.ListBean> {
                 llThreeImage.setVisibility(View.GONE);
                 tvImgNum.setVisibility(View.GONE);
                 ImageLoader.getInstance().displayImage(item.getImgList().get(0).getShowImg(), imageview);
+                imageview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ActivityExtras.EXTRAS_IMAGE_LARGER_POSITION, 0);
+                        bundle.putSerializable(ActivityExtras.EXTRAS_IMAGE_LARGER_LIST,
+                                new ArrayList<String>().add(item.getImgList().get(0).getShowImg()));
+                        ActivityUtils.overlay(mContext, LargerImageActivity.class, bundle);
+                    }
+                });
 
             } else if (item.getImgList().size() == 2) {
                 imageview.setVisibility(View.GONE);
@@ -80,6 +96,20 @@ public class UserHomeAdapter extends CommonAdapter<UserHome.ListBean> {
 
                 ImageLoader.getInstance().displayImage(item.getImgList().get(0).getShowImg(), ivTwo1);
                 ImageLoader.getInstance().displayImage(item.getImgList().get(1).getShowImg(), ivTwo2);
+
+                llTwoImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ArrayList<String> list = new ArrayList<>();
+                        for (int i = 0; i < getItem(helper.getPosition()).getImgList().size(); i++) {
+                            list.add(getItem(helper.getPosition()).getImgList().get(i).getShowImg());
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ActivityExtras.EXTRAS_IMAGE_LARGER_POSITION, 0);
+                        bundle.putSerializable(ActivityExtras.EXTRAS_IMAGE_LARGER_LIST, list);
+                        ActivityUtils.overlay(mContext, LargerImageActivity.class, bundle);
+                    }
+                });
             } else if (item.getImgList().size() == 3) {
                 imageview.setVisibility(View.GONE);
                 llTwoImage.setVisibility(View.GONE);
@@ -90,10 +120,24 @@ public class UserHomeAdapter extends CommonAdapter<UserHome.ListBean> {
                 ImageLoader.getInstance().displayImage(item.getImgList().get(0).getShowImg(), ivThree1);
                 ImageLoader.getInstance().displayImage(item.getImgList().get(1).getShowImg(), ivThree2);
                 ImageLoader.getInstance().displayImage(item.getImgList().get(2).getShowImg(), ivThree3);
+
+                llThreeImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ArrayList<String> list = new ArrayList<>();
+                        for (int i = 0; i < getItem(helper.getPosition()).getImgList().size(); i++) {
+                            list.add(getItem(helper.getPosition()).getImgList().get(i).getShowImg());
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putInt(ActivityExtras.EXTRAS_IMAGE_LARGER_POSITION, 0);
+                        bundle.putSerializable(ActivityExtras.EXTRAS_IMAGE_LARGER_LIST, list);
+                        ActivityUtils.overlay(mContext, LargerImageActivity.class, bundle);
+                    }
+                });
             }
         }
 
         helper.setText(R.id.tv_collection, item.getCollectnum());
-        helper.setText(R.id.tv_comment, String.valueOf((int)item.getCommentnum()));
+        helper.setText(R.id.tv_comment, String.valueOf((int) item.getCommentnum()));
     }
 }

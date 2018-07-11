@@ -81,52 +81,8 @@ public class PaymentActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        //"wx0179314396d8efb8"
         api = WXAPIFactory.createWXAPI(this, null);
         payment(BaseApplication.userInfo.getSessionid(), sharedPreferencesHelper.isSwitchLanguage());
-    }
-
-    private void sendPayRequest() {
-        String url = "https://wxpay.wxutil.com/pub_v2/app/app_pay.php";
-        OkHttpUtils.post().url(url)
-                .build().execute(new Callback<Wxinfo>() {
-            @Override
-            public Wxinfo parseNetworkResponse(Response response, int id) throws Exception {
-                String string = response.body().string();
-                return new Gson().fromJson(string, Wxinfo.class);
-            }
-
-            @Override
-            public void onError(Call call, Exception e, int id) {
-                Log.e(this.getClass().getName(), "onError" + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Wxinfo response, int id) {
-//                JSONObject json = null;
-//                try {
-//                    json = new JSONObject(response);
-//                    if (null != json && !json.has("retcode")) {
-                PayReq req = new PayReq();
-                req.appId = response.getAppid();//json.getString("appid");
-                req.partnerId = response.getPartnerid();//json.getString("partnerid");
-                req.prepayId = response.getPrepayid();//json.getString("prepayid");
-                req.nonceStr = response.getNoncestr();//json.getString("noncestr");
-                req.timeStamp = response.getTimestamp();//json.getString("timestamp");
-                req.packageValue = response.getPackageX();//json.getString("package");
-                req.sign = response.getSign();//json.getString("sign");
-                req.extData = "app data"; // optional
-
-                api.sendReq(req);
-//                    } else {
-//                        Log.d("PAY_GET", "���ش���" + json.getString("retmsg"));
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-
-            }
-        });
     }
 
     private void recharge(String sessionid, String price, final String type) {
@@ -135,11 +91,10 @@ public class PaymentActivity extends BaseActivity {
                 .addParams("sessionid", StringUtils.stringsIsEmpty(sessionid))
                 .addParams("oprice", price)
                 .addParams("ptype", type)
-                .build().execute(new Callback<Result>() {
+                .build().execute(new Callback<String>() {
             @Override
-            public Result parseNetworkResponse(Response response, int id) throws Exception {
-                String string = response.body().string();
-                return new Gson().fromJson(string, Result.class);
+            public String parseNetworkResponse(Response response, int id) throws Exception {
+                return response.body().string();
             }
 
             @Override
@@ -149,32 +104,25 @@ public class PaymentActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(Result response, int id) {
+            public void onResponse(String string, int id) {
                 closeProgressBar();
-                if (response.getStatus() == 1){
+                if (type.equals("wxpay")) {
+                    Wxinfo wxinfo = new Gson().fromJson(string, Wxinfo.class);
+                    PayReq req = new PayReq();
+                    api.registerApp(wxinfo.getData().getAppid());
+                    req.appId = wxinfo.getData().getAppid();
+                    req.partnerId = wxinfo.getData().getPartnerid();
+                    req.prepayId = wxinfo.getData().getPrepayid();
+                    req.nonceStr = wxinfo.getData().getNoncestr();
+                    req.timeStamp = wxinfo.getData().getTimestamp();
+                    req.packageValue = wxinfo.getData().getPackageX();
+                    req.sign = wxinfo.getData().getPaysign();
+                    req.extData = "app data"; // optional
 
-                    if (type.equals("wxpay")) {
-                        String data = new Gson().toJson(response.getData());
-                        Wxinfo wxinfo = new Gson().fromJson(data, Wxinfo.class);
-
-                        PayReq req = new PayReq();
-                        api.registerApp(wxinfo.getAppid());
-                        req.appId = wxinfo.getAppid();//json.getString("appid");
-                        req.partnerId = wxinfo.getPartnerid();//json.getString("partnerid");
-                        req.prepayId = wxinfo.getPrepayid();//json.getString("prepayid");
-                        req.nonceStr = wxinfo.getNoncestr();//json.getString("noncestr");
-                        req.timeStamp = wxinfo.getTimestamp();//json.getString("timestamp");
-                        req.packageValue = wxinfo.getPackageX();//json.getString("package");
-//                    req.sign = wxinfo.getSign();//json.getString("sign");
-                        req.sign = signNum(wxinfo.getPartnerid(), wxinfo.getPrepayid(), wxinfo.getPackageX(), wxinfo.getNoncestr(),
-                                wxinfo.getTimestamp(), "1my4JfWSX85ium9bKu5nI22SUr6xVgOm");
-                        req.extData = "app data"; // optional
-
-                        api.sendReq(req);
-                    }else if(type.equals("alipay")){
-                        String string = "app_id=2018050302626923&biz_content=%7B%22body%22%3A%22%5Cu5c0f%5Cu84dd%5Cu62a5%5Cu5145%5Cu503c%5Cu652f%5Cu4ed8%22%2C%22subject%22%3A%22%5Cu5c0f%5Cu84dd%5Cu62a5%22%2C%22out_trade_no%22%3A%2251_18071022303423020%22%2C%22timeout_express%22%3A%2230m%22%2C%22total_amount%22%3A%220.01%22%2C%22product_code%22%3A%22QUICK_MSECURITY_PAY%22%7D&charset=UTF-8&format=json&method=alipay.trade.app.pay¬ify_url=http%3A%2F%2Ftest.dingwei.cn%2Fxmcircle%2Fmember%2Fapp%2Fuser%2FaliPayCallBack&sign_type=RSA2×tamp=2018-07-10+22%3A30%3A34&version=1.0&sign=USco7zjuc11juOBwlajqYaDelwIH2P7h0k%2BP6z%2BG%2BDQyx9WaBMV7TsBdCQ6k9FMgCHf5T2Hi2JxDxBR3Hj7sSOEX5zQtnm0VJRaFATPuIoXVXVY5VZ4EJv%2BSam%2Ff6tEy6kbf60klrzgB6TTz%2B1rLYvSc9HgzJtgEeBRZ9TEh%2Fo5v%2BunA8pZfmWk2hopCoJUtkaXZvMSWhG7A%2FQfeGuAbJFnWdQf16QiDAVLO8%2BJoYiOhmoNFTMsN6nWmcAbadxdbtf0587BrTVud1KnKu5at7jw5tgMMEIgkdDRg1MsoXUf4oiixFaUu3RAHTELiak9acsRy2NlK5NTAP32L6lnvQg%3D%3D";
-                        alipay(response.getData().toString());
-                    }
+                    api.sendReq(req);
+                }else if(type.equals("alipay")){
+                    Result result = new Gson().fromJson(string, Result.class);
+                    alipay(result.getData().toString());
                 }
             }
         });
@@ -298,20 +246,5 @@ public class PaymentActivity extends BaseActivity {
             }
             return false;
         }
-    }
-
-    private String signNum(String partnerId,String prepayId,String packageValue,String nonceStr,String timeStamp,String key){
-        String stringA=
-                "appid="+"wx0179314396d8efb8"
-                        +"&noncestr="+nonceStr
-                        +"&package="+packageValue
-                        +"&partnerid="+partnerId
-                        +"&prepayid="+prepayId
-                        +"&timestamp="+timeStamp;
-
-
-        String stringSignTemp = stringA+"&key="+key;
-        String sign = MD5.getMessageDigest(stringSignTemp.getBytes()).toUpperCase();
-        return  sign;
     }
 }
